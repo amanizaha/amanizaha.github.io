@@ -1,0 +1,156 @@
+body {
+    color: white;
+    background-color: black;
+    font-family: sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.page {
+    position: relative;
+    height: 100%;
+    margin: auto;
+    width: 100%;
+}
+
+.page h2 {
+    text-align: center;
+}
+
+#screenSizeWarning {
+    display: none;
+}
+
+#consentPage {
+    display: none;
+}
+
+#consentPage p {
+    width: 80%;
+    margin: auto;
+}
+
+.centerButton {
+    margin: 0;
+    position: absolute;
+    width: 10%;
+    left: 45%;
+}
+
+#instructionPage {
+    display: none;
+}
+
+#instructionPage p {
+    width: 80%;
+    margin: auto;
+}
+
+.highlightedText {
+    background-color: red;
+}
+
+#referencePage {
+    display: none;
+}
+
+#referencePage p {
+    width: 80%;
+    margin: auto;
+}
+
+#referencePage a {
+    display: block;
+}
+
+#referencePage table {
+    width: 100%;
+}
+
+#referencePage img {
+    height: 20em;
+}
+
+#trialPage {
+    text-align: center;
+    display: none;
+}
+
+#trialNumber {
+    position: fixed;
+    right: 5em;
+    top: 1em;
+    color:orangered;
+}
+
+#trialPage table {
+    margin: auto;
+}
+
+#trialPage td {
+    padding-left: 0em;
+    padding-right: 0em;
+}
+
+#trialPage img {
+    width: 38vw;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#imagesContainer {
+}
+
+#refImageContainer {
+    margin-top: 1em;
+}
+
+#stimuliContainer {
+    display: flex;
+    padding-top: 1em;
+}
+
+#leftImageContainer {
+    display: block;
+    margin-left: auto;
+    padding-right: 0.5em;
+}
+
+#rightImageContainer {
+    display: block;
+    margin-right: auto;
+    padding-left: 0.5em;
+}
+
+#appealQuestion {
+    display: none;
+}
+
+.appealButton {
+    display: none;
+}
+
+#demographicsPage {
+    display: none;
+}
+
+#demographicsPage table {
+    margin: auto;
+    width: 70%;
+}
+
+#demographicsPage table td {
+    padding: 1em;
+}
+
+.red {
+    color: red;
+}
+
+.preloadImage {
+    display: none;
+}
