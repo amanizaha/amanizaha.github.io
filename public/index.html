@@ -75,17 +75,7 @@
     </div>
 
     <div id="trialPage" class="page">
-      <h2 id="trialNumber">Trial x</h2>
-      <div id="imagesContainer">
-        <div id="refImageContainer">
-          <table>
-              <tr>
-                  <td>
-                      <img id="refImage">
-                  </td>
-              </tr>
-          </table>
-        </div>
+      <div id="imagesContainer" style="margin-bottom: 2em;">
         <div id="stimuliContainer">
           <div id="leftImageContainer">
             <table>
@@ -96,7 +86,6 @@
                 </tr>
                 <tr>
                     <td>
-                        <button class="realismButton" onclick="realismSubmit(this.innerHTML)">Left</button>
                     </td>
                 </tr>
             </table>
@@ -110,15 +99,16 @@
                   </tr>
                   <tr>
                       <td>
-                          <button class="realismButton" onclick="realismSubmit(this.innerHTML)">Right</button>
                       </td>
                   </tr>
               </table>
           </div>
         </div>
       </div>
-      <button class="realismButton" onclick="realismSubmit(this.innerHTML)">Unsure</button>
-      <h1 id="trialHeading">Which image shows the same collection of trees as the reference?</h1>
+      <button class="realismButton" onclick="realismSubmit(this.innerHTML)">Yes</button>
+      <button class="realismButton" onclick="realismSubmit(this.innerHTML)">No</button>
+      <h1 id="trialHeading">Do these images show the same collection of trees?</h1>
+      <h2 id="trialNumber">Trial x/y</h2>
     </div>
 
     <div id="demographicsPage" class="page">

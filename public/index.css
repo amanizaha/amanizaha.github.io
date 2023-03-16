@@ -80,9 +80,10 @@ h1 {
 }
 
 #trialNumber {
-    position: fixed;
-    right: 5em;
-    top: 1em;
+    /* position: fixed;
+    right: 10em;
+    bottom: 5em; */
+    margin-top: 5em;
     color:orangered;
 }
 
