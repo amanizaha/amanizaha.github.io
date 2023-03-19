@@ -13,56 +13,72 @@ const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 var ref = db.ref("/");
 
-const trials_TD_or = [
-    ["100rand50_alike.png", "100rand60_alike.png"],
-    ["100rand50a_alike2.png", "100rand60_alike2.png"],
-    ["100rand50a_alike.png", "100rand50_alike.png"], // same
-    ["100cluster50a_alike.jpg", "100cluster60_alike.jpg"],
-    ["rand35_alike.jpg", "rand40_alike.jpg"],
-    ["rand50_alike.png", "rand60_alike.png"],
-    ["rand50_alike.png", "rand50a_alike.png"], // same
-    //["cluster35_alike.jpg", "cluster40_alike.jpg"],
-    ["cluster50a_alike.jpg", "cluster60_alike.jpg"],
-    ["cluster50a_alike.jpg", "cluster50_alike.jpg"], // same
+const trials_FP = [
+    // 4 varieties
+    ["200cluster4.jpg", "190cluster4.jpg"],
+    ["200cluster4.jpg", "180cluster4.jpg"],
+    ["200cluster4.jpg", "170cluster4.jpg"],
+    ["200cluster4.jpg", "150cluster4.jpg"],
+    //
+    ["100cluster4.jpg", "95cluster4.jpg"],
+    ["100cluster4.jpg", "90cluster4.jpg"],
+    ["100cluster4.jpg", "85cluster4.jpg"],
+    //
+    ["60cluster4.jpg", "60cluster4a.jpg"],
+    ["60cluster4.jpg", "57cluster4.jpg"],
+    ["60cluster4.jpg", "54cluster4.jpg"],
+    ["60cluster4.jpg", "51cluster4.jpg"],
+    // 4 varieties
+    ["30cluster4.jpg", "29cluster4.jpg"],
+    ["30cluster4.jpg", "28cluster4.jpg"],
+    ["30cluster4.jpg", "27cluster4.jpg"],
+    ["30cluster4.jpg", "26cluster4.jpg"],
+    // RANDOM //
+    ["200random4.jpg", "200random4a.jpg"],
+    ["200random4.jpg", "190random4.jpg"],
+    ["200random4.jpg", "180random4.jpg"],
+    ["200random4.jpg", "170random4.jpg"],
+    ["200random4.jpg", "150random4.jpg"],
+    //
+    ["100random.jpg", "100random_a.jpg"],
+    ["100random.jpg", "95random.jpg"],
+    ["100random.jpg", "90random.jpg"],
+    ["100random.jpg", "85random.jpg"],
+    //
+    ["60random.jpg", "60random_a.jpg"],
+    ["60random.jpg", "57random.jpg"],
+    ["60random.jpg", "54random.jpg"],
+    ["60random.jpg", "51random.jpg"],
+    //
+    ["30random.jpg", "30random_a.jpg"],
+    ["30random.jpg", "29random.jpg"],
+    ["30random.jpg", "28random.jpg"],
+    ["30random.jpg", "27random.jpg"],
+    ["30random.jpg", "26random.jpg"],
 ];
 
-const trials_FP_or = [
-    // ["40rand35fp_alike.jpg", "40rand40fp_alike.jpg"],
-    // ["40rand50fp_alike.jpg", "40rand60fp_alike.jpg"],
-    // ["60cluster50fp_alike.jpg", "60cluster60fp_alike.jpg"],
-    // ["40cluster50fp_alike.jpg", "40cluster60fp_alike.jpg"],
-    // ["40cluster50fp_alike.jpg", "40cluster50afp_alike.jpg"], // same
+const trials_TD = [
+    // RANDOM //
+    ["200randomTD4.jpg", "200randomTD4a.jpg"],
+    ["200randomTD4.jpg", "190randomTD4.jpg"],
+    ["200randomTD4.jpg", "180randomTD4.jpg"],
+    ["200randomTD4.jpg", "170randomTD4.jpg"],
     //
-    // ["30cluster50fp_alike.jpg", "30cluster60fp_alike.jpg"],
-    // ["30cluster30fp_alike.jpg", "30cluster40fp_alike.jpg"],
-    // ["30cluster50fp_alike.jpg", "30cluster50afp_alike.jpg"], // same
-    ["30rand50fp_alike.jpg", "30rand60fp_alike.jpg"],
-    ["30rand30fp_alike.jpg", "30rand40fp_alike.jpg"],
-    ["30rand50fp_alike.jpg", "30rand50afp_alike.jpg"], // same
+    ["100randomTD4.jpg", "95randomTD4.jpg"],
+    ["100randomTD4.jpg", "90randomTD4.jpg"],
     //
-    // ["20cluster50fp_alike.jpg", "20cluster60fp_alike.jpg"],
-    // ["20cluster30fp_alike.jpg", "20cluster40fp_alike.jpg"],
-    // ["20cluster50fp_alike.jpg", "20cluster50afp_alike.jpg"], // same
-    ["20rand50fp_alike.jpg", "20rand60fp_alike.jpg"],
-    ["20rand35fp_alike.jpg", "20rand40fp_alike.jpg"],
-    ["20rand50fp_alike.jpg", "20rand50afp_alike.jpg"], // same
-    ["20rand50_dense.jpg", "20rand50a_dense.jpg", "20rand60_dense.jpg"],
-    ["20rand50_dense_color.jpg", "20rand50a_dense_color.jpg", "20rand60_dense_color.jpg"]
-];
-
-const trials_FP_density = [
-    ["200cluster50fp_alike.jpg", "170cluster50fp_alike.jpg"],
-    ["100cluster50fp_alike.jpg", "80cluster50fp_alike.jpg"],
-    ["60cluster50fp_alike.jpg", "40cluster50fp_alike.jpg"],
-    ["40cluster50afp_alike.jpg", "30cluster50fp_alike.jpg"],
-    ["200rand50fp_alike.jpg", "170rand50fp_alike.jpg"],
-    ["100rand50fp_alike.jpg", "80rand50fp_alike.jpg"],
-    ["60rand50fp_alike.jpg", "40rand50fp_alike.jpg"],
-    ["40rand50fp_alike.jpg", "30rand50fp_alike.jpg"],
+    ["60randomTD4.jpg", "60randomTD4a.jpg"], // shape!
+    ["60randomTD4.jpg", "57randomTD4.jpg"],
+    ["60randomTD4.jpg", "54randomTD4.jpg"],
+    ["60randomTD4.jpg", "51randomTD4.jpg"],
+    //
+    ["30randomTD4.jpg", "29randomTD4.jpg"], // shape!
+    ["30randomTD4.jpg", "28randomTD4.jpg"],
+    ["30randomTD4.jpg", "27randomTD4.jpg"],
 ];
 
 //const trials = trials_TD_or.concat(trials_FP_or);
-const trials = trials_FP_density
+const trials = trials_TD
 
 const trialOrder = [...trials.keys()];
 shuffleArray(trialOrder);
