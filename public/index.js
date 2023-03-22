@@ -13,71 +13,60 @@ const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 var ref = db.ref("/");
 
-const trials_FP = [
-    // 4 varieties
-    ["200cluster4.jpg", "190cluster4.jpg"],
-    ["200cluster4.jpg", "180cluster4.jpg"],
-    ["200cluster4.jpg", "170cluster4.jpg"],
-    ["200cluster4.jpg", "150cluster4.jpg"],
-    //
-    ["100cluster4.jpg", "95cluster4.jpg"],
-    ["100cluster4.jpg", "90cluster4.jpg"],
-    ["100cluster4.jpg", "85cluster4.jpg"],
-    //
-    ["60cluster4.jpg", "60cluster4a.jpg"],
-    ["60cluster4.jpg", "57cluster4.jpg"],
-    ["60cluster4.jpg", "54cluster4.jpg"],
-    ["60cluster4.jpg", "51cluster4.jpg"],
-    // 4 varieties
-    ["30cluster4.jpg", "29cluster4.jpg"],
-    ["30cluster4.jpg", "28cluster4.jpg"],
-    ["30cluster4.jpg", "27cluster4.jpg"],
-    ["30cluster4.jpg", "26cluster4.jpg"],
-    // RANDOM //
-    ["200random4.jpg", "200random4a.jpg"],
-    ["200random4.jpg", "190random4.jpg"],
-    ["200random4.jpg", "180random4.jpg"],
-    ["200random4.jpg", "170random4.jpg"],
-    ["200random4.jpg", "150random4.jpg"],
-    //
-    ["100random.jpg", "100random_a.jpg"],
-    ["100random.jpg", "95random.jpg"],
-    ["100random.jpg", "90random.jpg"],
-    ["100random.jpg", "85random.jpg"],
-    //
-    ["60random.jpg", "60random_a.jpg"],
-    ["60random.jpg", "57random.jpg"],
-    ["60random.jpg", "54random.jpg"],
-    ["60random.jpg", "51random.jpg"],
-    //
-    ["30random.jpg", "30random_a.jpg"],
-    ["30random.jpg", "29random.jpg"],
-    ["30random.jpg", "28random.jpg"],
-    ["30random.jpg", "27random.jpg"],
-    ["30random.jpg", "26random.jpg"],
-];
+let tGuess = -1;
+let tGuessSd = 2
+let pThreshold = 0.82
+let beta = 3.5;
+let delta = 0.01
+let gamma = 0.5;
 
 const trials_TD = [
-    // RANDOM //
-    ["200randomTD4.jpg", "200randomTD4a.jpg"],
-    ["200randomTD4.jpg", "190randomTD4.jpg"],
-    ["200randomTD4.jpg", "180randomTD4.jpg"],
-    ["200randomTD4.jpg", "170randomTD4.jpg"],
-    //
-    ["100randomTD4.jpg", "95randomTD4.jpg"],
-    ["100randomTD4.jpg", "90randomTD4.jpg"],
-    //
-    ["60randomTD4.jpg", "60randomTD4a.jpg"], // shape!
-    ["60randomTD4.jpg", "57randomTD4.jpg"],
-    ["60randomTD4.jpg", "54randomTD4.jpg"],
-    ["60randomTD4.jpg", "51randomTD4.jpg"],
-    //
-    ["30randomTD4.jpg", "29randomTD4.jpg"], // shape!
-    ["30randomTD4.jpg", "28randomTD4.jpg"],
-    ["30randomTD4.jpg", "27randomTD4.jpg"],
+    ["TD200random35.jpg", "TD200random45.jpg"],
+    ["TD200random50.jpg", "TD200random60.jpg"],
+    // ["TD200random65.jpg", "TD200random75.jpg"],
+    // ["TD100random35.jpg", "TD100random45.jpg"],
+    // ["TD100random50.jpg", "TD100random60.jpg"],
+    // ["TD100random65.jpg", "TD100random75.jpg"],
+    // ["TD60random35.jpg", "TD60random45.jpg"],
+    // ["TD60random50.jpg", "TD60random60.jpg"],
+    // ["TD60random65.jpg", "TD60random75.jpg"],
+    // ["TD30random33.jpg", "TD30random43.jpg"],
+    // ["TD30random50.jpg", "TD30random60.jpg"],
+    // // ["TD30random65.jpg", "TD30random75.jpg"],
+    // //
+    // ["TD200cluster35.jpg", "TD200cluster45.jpg"],
+    // ["TD200cluster50.jpg", "TD200cluster60.jpg"],
+    // ["TD200cluster65.jpg", "TD200cluster75.jpg"],
+    // ["TD100cluster35.jpg", "TD100cluster45.jpg"],
+    // ["TD100cluster50.jpg", "TD100cluster60.jpg"],
+    // ["TD100cluster65.jpg", "TD100cluster75.jpg"],
+    // ["TD200cluster50-unc.jpg", "TD200cluster60-unc.jpg"],
+    // ["TD100cluster50-unc.jpg", "TD100cluster60-unc.jpg"],
 ];
 
-//const trials = trials_TD_or.concat(trials_FP_or);
+const trials_F = [
+    ["F200random35.jpg", "F200random45.jpg"],
+    ["F200random50.jpg", "F200random60.jpg"],
+    ["F200random65.jpg", "F200random75.jpg"],
+    ["F100random35.jpg", "F100random45.jpg"],
+    ["F100random50.jpg", "F100random60.jpg"],
+    ["F100random65.jpg", "F100random75.jpg"],
+    ["F60random35.jpg", "F60random45.jpg"],
+    ["F60random50.jpg", "F60random60.jpg"],
+    ["F60random65.jpg", "F60random75.jpg"],
+    ["F30random33.jpg", "F30random43.jpg"],
+    ["F30random50.jpg", "F30random60.jpg"],
+    ["F30random65.jpg", "F30random75.jpg"],
+    // Below are all uncorrelated.
+    ["F200cluster35.jpg", "F200cluster45.jpg"],
+    ["F200cluster50.jpg", "F200cluster60.jpg"],
+    ["F200cluster65.jpg", "F200cluster75.jpg"],
+    ["F100cluster35.jpg", "F100cluster45.jpg"],
+    ["F100cluster50.jpg", "F100cluster60.jpg"],
+    ["F100cluster65.jpg", "F100cluster75.jpg"]
+];
+
+//const trials = trials_TD.concat(trials_FP);
 const trials = trials_TD
 
 const trialOrder = [...trials.keys()];
@@ -89,9 +78,12 @@ const trialDelay = 1000;
 let startTime = new Date();
 let results = []
 
+myquest = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma);
+
 setTimeout(() => $("#continueButton").prop("disabled", false), pageDelay);
-$("#welcomeHeading").hide();
-startTrials()
+$("#welcomeHeading").show();
+$("#consentPage").show();
+//startTrials()
 
 if (window.screen.height < 600 || window.screen.width < 1000) {
     $("#consentPage").hide();
@@ -103,7 +95,7 @@ function continueButtonPressed() {
     $("#consentPage").hide();
     $("#instructionPage").show();
     $("#welcomeHeading").hide();
-    setTimeout(() => $("#startButton").prop("disabled", false), pageDelay);
+    setTimeout(() => $("#trialStartButton").prop("disabled", false), pageDelay);
 }
 
 function startButtonPressed() {
@@ -113,7 +105,8 @@ function startButtonPressed() {
 }
 
 function trialStartButtonPressed() {
-    $("#referencePage").hide();
+    //$("#referencePage").hide();
+    $("#instructionPage").hide();
     startTrials();
 }
 
@@ -175,28 +168,27 @@ function finishTrials() {
 
 function verifyAndGatherData() {
     let potentialAge = parseInt($("input[name=age]").val(), 10);
-    let potentialCountry = $("input[name=country]").val();
+    //let potentialCountry = $("input[name=country]").val();
 
-    if (Number.isInteger(potentialAge) && potentialCountry) {
+    if (Number.isInteger(potentialAge)) {
         let data = {
-            //gender: $("select[name=gender]").find(":selected").text(),
+            gender: $("select[name=gender]").find(":selected").text(),
             age: potentialAge,
             education: $("select[name=education]").find(":selected").text(),
-            //country: potentialCountry,
             experience: $("select[name=experience]").find(":selected").text(),
             vision: $("select[name=vision]").find(":selected").text(),
-            //comments: $("textarea[name=comments]").val(),
+            comments: $("textarea[name=comments]").val(),
             duration: 0.001 * (new Date() - startTime),
             trialResults: results
         }
 
-        const newPostRef = ref.push();
-        newPostRef.set({
-            data: data
-        });
+        // const newPostRef = ref.push();
+        // newPostRef.set({
+        //     data: data
+        // });
 
         $("input[name=Data]").val(JSON.stringify(data));
-        //$("#dataForm").submit();
+        $("#dataForm").submit();
         //$("#demographicsPage").hide();
     } else {
         alert("Incorrect data, correct any errors and try again.");

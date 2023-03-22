@@ -5,18 +5,18 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <h1 id="welcomeHeading">Welcome</h1>
 
     <div id="screenSizeWarning" class="page">
         <h2>Screen size too small</h2>
         <p>The size of your screen is too small to effectively display the tasks. Switch to a larger screen, specifically a computer monitor larger than 1000x600.</p>
         <p id="screenSize"></p>
     </div>
+    <h1 id="welcomeHeading">Welcome</h1>
 
     <div id="consentPage" class="page">
         <h2>Consent</h2>
         <p>
-            In this task, you will be presented with computer-generated imagery of stone surfaces. We are interested in seeing how you rate the realism of these images. The task will take approximately four minutes.
+            In this task, you will be presented with computer-generated imagery of forests. We are interested in seeing how you perceive these images. The task will take approximately X minutes.
         </p>
         <br>
         <p>
@@ -30,22 +30,22 @@
     <div id="instructionPage" class="page">
         <h2>Instructions</h2>
         <p>
-            In this task, you will be shown two images side by side, both showing an aged stone surface with some objects placed on it, and with lichen growing on it. In order for you to familiarize yourself with the appearance of real lichen, you will first be shown a collection of reference images, which are not to be rated.
+            In this task, you will be shown two images side by side, both showing a forest with trees.
         </p>
         <br>
         <p>
-            Your task is to answer which of the two images is more realistic to you. You answer by clicking on the button associated with the image. In this context, you are free to decide what realism means to you and answer accordingly.
+            Your task is to answer whether you think both images show the same collection of trees. You answer by clicking either 'yes' or 'no'.
         </p>
         <br>
         <p>
-            There will be a total of 75 image pairs, each needing to be rated in terms of realism.
+            There will be a total of Y image pairs, and for each of these you need to choose whether the same set of trees is shown in both images.
         </p>
         <br>
         <p>
             If the page contents look like they don't fit the window at any point, please zoom the page out by pressing CTRL and - together.
         </p>
         <br>
-        <button id="startButton" class="centerButton" disabled onclick="startButtonPressed()">Start</button>
+        <button id="trialStartButton" class="centerButton" disabled onclick="trialStartButtonPressed()">Start</button>
     </div>
 
     <div id="referencePage" class="page">
@@ -155,13 +155,6 @@
             </tr>
             <tr>
                 <td>
-                    <label for="country">What is your country of residence?</label>
-                    <input name="country" type="text">
-                    <span class="red">*</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
                     <label for="experience">What is your experience with computer graphics?</label>
                     <select name="experience">
                         <option>I have never interacted with computer graphics</option>
@@ -194,47 +187,18 @@
                 </td>
             </tr>
         </table>
-        
+
         <button id="completionButton" class="centerButton" onclick="verifyAndGatherData()">Finish</button>
     </div>
 
     <!-- This is the original form with the original action, which is no longer available. Replace it with your own URL, or solve it some other way. -->
-    <!--<form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbz3LV65ExXxx1NKAU8pk7EVQ8wpShCdVHvZaA7W01h-NHAWldWtmIZJZp8nSkH1xGSv/exec">
-        <input name="Data" type="hidden">
-    </form>-->
-    <form id="dataForm" method="POST" action="">
+    <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbwLmr_tVveXi5kPhTuIWapbCgvbniS4OQganUVlZNIW0RfRfz1Q2FgtrAmfm1pV71Fw6w/exec">
         <input name="Data" type="hidden">
     </form>
 
     <img class="preloadImage" src="img/S1C1C1.png">
-    <img class="preloadImage" src="img/S1C1C2.png">
-    <img class="preloadImage" src="img/S1C1C3.png">
-    <img class="preloadImage" src="img/S1C2C1.png">
-    <img class="preloadImage" src="img/S1C2C2.png">
-    <img class="preloadImage" src="img/S1C2C3.png">
-    <img class="preloadImage" src="img/S1C3C1.png">
-    <img class="preloadImage" src="img/S1C3C2.png">
-    <img class="preloadImage" src="img/S1C3C3.png">
-    <img class="preloadImage" src="img/S2C1C1.png">
-    <img class="preloadImage" src="img/S2C1C2.png">
-    <img class="preloadImage" src="img/S2C1C3.png">
-    <img class="preloadImage" src="img/S2C2C1.png">
-    <img class="preloadImage" src="img/S2C2C2.png">
-    <img class="preloadImage" src="img/S2C2C3.png">
-    <img class="preloadImage" src="img/S2C3C1.png">
-    <img class="preloadImage" src="img/S2C3C2.png">
-    <img class="preloadImage" src="img/S2C3C3.png">
-    <img class="preloadImage" src="img/S3C1C1.png">
-    <img class="preloadImage" src="img/S3C1C2.png">
-    <img class="preloadImage" src="img/S3C1C3.png">
-    <img class="preloadImage" src="img/S3C2C1.png">
-    <img class="preloadImage" src="img/S3C2C2.png">
-    <img class="preloadImage" src="img/S3C2C3.png">
-    <img class="preloadImage" src="img/S3C3C1.png">
-    <img class="preloadImage" src="img/S3C3C2.png">
-    <img class="preloadImage" src="img/S3C3C3.png">
 
-
+    <script src="https://www.hes.kyushu-u.ac.jp/~kurokid/QUEST/dist/jsQUEST.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="index.js"></script>
