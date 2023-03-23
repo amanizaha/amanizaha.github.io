@@ -189,7 +189,9 @@ function verifyAndGatherData() {
 
         $("input[name=Data]").val(JSON.stringify(data));
         $("#dataForm").submit();
-        //$("#demographicsPage").hide();
+        $("#demographicsPage").hide();
+        $("#endPage").show();
+
     } else {
         alert("Incorrect data, correct any errors and try again.");
     }
