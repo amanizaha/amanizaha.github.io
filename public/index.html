@@ -75,7 +75,17 @@
     </div>
 
     <div id="trialPage" class="page">
-      <div id="imagesContainer" style="margin-bottom: 2em;">
+      <div id="imagesContainer">
+        <div id="refImageContainer">
+          <table>
+              <tr>
+                  <td>
+                      <img id="refImage">
+                  </td>
+              </tr>
+          </table>
+        </div>
+      <div id="imagesContainer" style="">
         <div id="stimuliContainer">
           <div id="leftImageContainer">
             <table>
@@ -86,6 +96,7 @@
                 </tr>
                 <tr>
                     <td>
+                        <button class="realismButton" onclick="realismSubmit(this.innerHTML)">Left</button>
                     </td>
                 </tr>
             </table>
@@ -99,15 +110,14 @@
                   </tr>
                   <tr>
                       <td>
+                        <button class="realismButton" onclick="realismSubmit(this.innerHTML)">Right</button>
                       </td>
                   </tr>
               </table>
           </div>
         </div>
       </div>
-      <button class="realismButton" onclick="realismSubmit(this.innerHTML)">Yes</button>
-      <button class="realismButton" onclick="realismSubmit(this.innerHTML)">No</button>
-      <h1 id="trialHeading">Do these images show the same collection of trees?</h1>
+      <h1 id="trialHeading">Which image shows the same collection of trees as the reference?</h1>
       <h2 id="trialNumber">Trial x/y</h2>
     </div>
 
@@ -210,12 +220,13 @@
         </p>
     </div>
 
-    <img class="preloadImage" src="img/TD200random35.jpg">
-    <img class="preloadImage" src="img/TD200random45.jpg">
-    <img class="preloadImage" src="img/TD200random50.jpg">
-    <img class="preloadImage" src="img/TD200random60.jpg">
+    <img style="display: none;" class="preloadImage" src="img/TD200random35.jpg">
+    <img style="display: none;" class="preloadImage" src="img/TD200random45.jpg">
+    <img style="display: none;" class="preloadImage" src="img/TD200random50.jpg">
+    <img style="display: none;" class="preloadImage" src="img/TD200random60.jpg">
 
     <script src="https://www.hes.kyushu-u.ac.jp/~kurokid/QUEST/dist/jsQUEST.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="index.js"></script>
