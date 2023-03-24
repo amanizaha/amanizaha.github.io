@@ -41,6 +41,10 @@ function interp1(xs, vs, xqs, method) {
     return yqs.slice();
 }
 
+animate = 2
+const chart_width = 500
+const chart_height = 400
+
 // For each trial: ref50, stim50 + stimX
 // Need to ensure same stim50 is not seen in a row.
 // Ref can be kept the same.
@@ -65,22 +69,24 @@ function interp1(xs, vs, xqs, method) {
 
 // Available intensities (exc. base intensity).
 const trials_T200R = [55, 60, 65, 70, 75, 80, 85, 90];
-//["T200R55.jpg", "T200R60.jpg", "T200R65.jpg", "T200R70.jpg", "T200R75.jpg", "T200R80.jpg", "T200R85.jpg", "T200R90.jpg"]
+const trials_T100R = [55, 60, 63, 72, 74, 85, 83, 87];
 
-const trials = trials_T200R
+const trials = [trials_T200R, trials_T100R]
+const conditions = ["T200R", "T100R"]
 
-const trialOrder = [...trials.keys()];
-shuffleArray(trialOrder);
-const numTrials = trials.length;
+//const trialOrder = [...trials.keys()];
+//shuffleArray(trialOrder);
+let rand = Math.floor(Math.random() * trials.length)
+console.log("rand", rand)
+condition = trials[rand];
+conditionStr = conditions[rand];
+
+const numTrials = trials.length * 7;
 let currentTrialIndex = -1;
 const pageDelay = 0;
 const trialDelay = 1000;
 let startTime = new Date();
 let results = []
-
-animate = 2
-const chart_width = 500
-const chart_height = 400
 
 // tGuess = 20% change threshold, i.e. from 50:50 -> 70:30.
 let tGuess = Math.log10(0.3); // Estimate of intensity expected to result in a response rate of pThreshold.
@@ -94,8 +100,6 @@ let tActual = 1;
 let wrongRight = ['wrong', 'right'];
 var q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 2);
 var tTest = jsQUEST.QuestMode(q).mode;
-// if(10**tTest > 0.5) { tTest = Math.log10(0.45) }
-console.log(10**tTest)
 var currentIntensity = tTest
 var k = 7;
 
@@ -113,7 +117,6 @@ var k = 7;
 setTimeout(() => $("#continueButton").prop("disabled", false), pageDelay);
 $("#welcomeHeading").show();
 $("#consentPage").show();
-//startTrials()
 
 if (window.screen.height < 600 || window.screen.width < 1000) {
     $("#consentPage").hide();
@@ -151,7 +154,21 @@ function realismSubmit(button) {
     results.push(getTrialResult(button));
     tTest = jsQUEST.QuestMode(q).mode; // what's the next suggested intensity?
     console.log("SUGGESTED: ", tTest, 10**tTest)
-    nextTrial();
+    if (k == 0) { // current CONDITION done
+        k = 7;
+        let ind = trials.indexOf(condition); // removes previous condition from trials.
+        trials.splice(ind, 1);
+        ind = conditions.indexOf(conditionStr); // removes previous condition from trials.
+        conditions.splice(ind, 1);
+        console.log(conditions)
+
+        let rand = Math.floor(Math.random() * trials.length)
+        condition = trials[rand];
+        conditionStr = conditions[rand];
+        console.log("UPDATED:", condition, conditionStr)
+        nextTrial();
+    }
+    else { nextTrial() }
 }
 
 // Checks if chosen stimuli is correct or not.
@@ -177,9 +194,10 @@ function getTrialResult(button) {
     let response = correctAnswer(imageString.substring(0, imageString.length - 4), trialLevel.substring(0, trialLevel.length - 4))
     // console.log("RES is", response, 10**currentIntensity)
     q = jsQUEST.QuestUpdate(q, currentIntensity, response); //  used intensity may not be same as tTest.
-    
+    k = k-1;
+
     return {
-        trialNum: trialOrder[currentTrialIndex],
+        trialNum: currentTrialIndex,
         trialLeft: $("#leftImage").attr("src"),
         trialRight: $("#rightImage").attr("src"),
         answer: imageString
@@ -194,16 +212,15 @@ function getTrialResult(button) {
     // Once k=0, store threshold estimates in a result list?
 function getClosestIntensity(suggested){
     let goal = 50 + Math.round((10**suggested)*100); // e.g. 61
-    const closest = trials_T200R.reduce((prev, curr) => {
+    const closest = condition.reduce((prev, curr) => {
         return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
     });
     // remove found value
-    const ind = trials_T200R.indexOf(closest);
-    trials_T200R.splice(ind, 1);
+    const ind = condition.indexOf(closest);
+    condition.splice(ind, 1);
 
     // returns e.g. 60
-    let condition = "T200R"
-    let nextIntensity = condition + closest.toString(); // "T200R60"
+    let nextIntensity = conditionStr + closest.toString(); // "T200R60"
     currentIntensity = Math.log10((closest - 50)/100)
     console.log("closest:", closest, "LOG", currentIntensity)
     return nextIntensity
@@ -214,12 +231,12 @@ function nextTrial() {
     if (currentTrialIndex >= numTrials) {
         console.log(0.001 * (new Date() - startTime))
         finishTrials();
-    } else {
-        let condition = "T200R50"
-        let same = condition + "a"
+    }
+    else {
+        let same = conditionStr + "50a"
         let currentStimuli = getClosestIntensity(tTest);
 
-        $("#refImage").attr("src", `img/${condition}.jpg`);
+        $("#refImage").attr("src", `img/${conditionStr + "50"}.jpg`);
         $("#trialNumber").text(`Trial ${currentTrialIndex + 1}/${numTrials}`)
         if (Math.random() < 0.5) {
             $("#leftImage").attr("src", `img/${same}.jpg`);
@@ -281,79 +298,3 @@ function shuffleArray(array) {
         array[j] = temp;
     }
 }
-
-// const plotIt = 2
-// let ctx, myChart, mydata
-//     if (animate && document.getElementById('posterior_chart') === null) {
-//         const canvas_element = document.createElement('canvas');
-//         canvas_element.id = 'posterior_chart';
-//         canvas_element.width = chart_width
-//         canvas_element.height = chart_height
-//         document.body.appendChild(canvas_element)
-//         ctx = document.getElementById('posterior_chart').getContext('2d');
-//     } 
-
-
-// function yoink() {
-//     console.log("now???")
-//     const weibull = [];
-//     for (let i = 0; i < q.x2.length; i++){
-//         weibull.push({
-//             x: q.x2[i] + tActual,
-//             y: q.p2[i]
-//         });
-//     }
-//     const graph_data = [];
-//     graph_data.push({
-//         label: 'Psychometric function',
-//         data: weibull,
-//         backgroundColor: 'RGBA(225,95,150, 1)',
-//     });
-
-//     graph_data.push({
-//         label: 'tActual',
-//         data: [{
-//             x: tActual, 
-//             // y: numeric.spline(numeric.add(q.x2, tActual) , q.p2).at(tActual)
-//             y: 0.82
-//         }],
-//         backgroundColor: 'RGBA(255, 0, 255, 1)',
-//         pointBorderColor: 'RGBA(255, 0, 255, 1)',
-//         pointStyle: 'circle',
-//         pointBorderWidth: 2,
-//         pointRadius: 10,
-//         pointRotation: 45,
-//     });
-
-//     simulate_chart = new Chart(ctx, {
-//         type: 'scatter',
-//         data: {
-//             datasets: graph_data
-//         },
-//         options: {
-//             title: {
-//                 display: true,
-//                 text: 'Psychometric function by QuestSimulate.'
-//             },
-//             scales: {
-//                 xAxes: [
-//                     {
-//                         scaleLabel: {
-//                             display: true,
-//                             labelString: 'Stimulus intensity (Log scale)'
-//                         }
-//                     }
-//                 ],
-//                 yAxes: [
-//                     {
-//                         scaleLabel: {
-//                             display: true,
-//                             labelString: 'Probability'
-//                         }
-//                     }
-//                 ]
-//             },
-//             responsive: false
-//         }
-//     });
-// }
