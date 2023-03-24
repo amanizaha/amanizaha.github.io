@@ -70,14 +70,16 @@ const chart_height = 400
 // Available intensities (exc. base intensity).
 const trials_T200R = [55, 60, 65, 70, 75, 80, 85, 90];
 const trials_T100R = [55, 60, 63, 72, 74, 85, 83, 87];
+const trials_T140R = [52, 60, 63, 72, 74, 85, 83, 87];
 
 const trials = [trials_T200R, trials_T100R]
 const conditions = ["T200R", "T100R"]
 
+if(trials.length != conditions.length) { throw new Error('Missing trials!'); }
+
 //const trialOrder = [...trials.keys()];
 //shuffleArray(trialOrder);
 let rand = Math.floor(Math.random() * trials.length)
-console.log("rand", rand)
 condition = trials[rand];
 conditionStr = conditions[rand];
 
@@ -86,7 +88,8 @@ let currentTrialIndex = -1;
 const pageDelay = 0;
 const trialDelay = 1000;
 let startTime = new Date();
-let results = []
+var results = []
+var allResults = {}
 
 // tGuess = 20% change threshold, i.e. from 50:50 -> 70:30.
 let tGuess = Math.log10(0.3); // Estimate of intensity expected to result in a response rate of pThreshold.
@@ -153,19 +156,21 @@ function realismSubmit(button) {
     setButtonEnableTimer("realismButton", trialDelay);
     results.push(getTrialResult(button));
     tTest = jsQUEST.QuestMode(q).mode; // what's the next suggested intensity?
-    console.log("SUGGESTED: ", tTest, 10**tTest)
+    //console.log("SUGGESTED: ", tTest, 10**tTest)
+
     if (k == 0) { // current CONDITION done
+        allResults[conditionStr] = results; // add all results for 'completed' condition
+        results = []
+
         k = 7;
         let ind = trials.indexOf(condition); // removes previous condition from trials.
         trials.splice(ind, 1);
         ind = conditions.indexOf(conditionStr); // removes previous condition from trials.
         conditions.splice(ind, 1);
-        console.log(conditions)
 
         let rand = Math.floor(Math.random() * trials.length)
         condition = trials[rand];
         conditionStr = conditions[rand];
-        console.log("UPDATED:", condition, conditionStr)
         nextTrial();
     }
     else { nextTrial() }
@@ -200,7 +205,8 @@ function getTrialResult(button) {
         trialNum: currentTrialIndex,
         trialLeft: $("#leftImage").attr("src"),
         trialRight: $("#rightImage").attr("src"),
-        answer: imageString
+        choice: imageString,
+        answer: wrongRight[response]
     }
 }
 
@@ -272,9 +278,8 @@ function verifyAndGatherData() {
             vision: $("select[name=vision]").find(":selected").text(),
             comments: $("textarea[name=comments]").val(),
             duration: 0.001 * (new Date() - startTime),
-            trialResults: results
+            trialResults: allResults
         }
-
         $("input[name=Data]").val(JSON.stringify(data));
         $("#dataForm").submit();
         $("#demographicsPage").hide();
