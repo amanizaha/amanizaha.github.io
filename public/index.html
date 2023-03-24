@@ -151,6 +151,18 @@
             </tr>
             <tr>
                 <td>
+                    <label for="device">What device are you using to view this experiment?</label>
+                    <select name="device">
+                        <option>Desktop computer</option>
+                        <option>Laptop (e.g. Macbook, HP, etc)</option>
+                        <option>Tablet (e.g. iPad, Galaxy Tab, etc)</option>
+                        <option>Smartphone</option>
+                    </select>
+                    <span class="red">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <label for="education">What is the highest level of education you have completed?</label>
                     <select name="education">
                         <option>Less than high school degree</option>
@@ -201,7 +213,7 @@
 
         <button id="completionButton" class="centerButton" onclick="verifyAndGatherData()">Finish</button>
     </div>
-    
+
     <!-- This is the original form with the original action, which is no longer available. Replace it with your own URL, or solve it some other way. -->
     <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbwLmr_tVveXi5kPhTuIWapbCgvbniS4OQganUVlZNIW0RfRfz1Q2FgtrAmfm1pV71Fw6w/exec" target="iframe">
         <input name="Data" type="hidden">

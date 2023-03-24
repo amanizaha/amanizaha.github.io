@@ -83,7 +83,7 @@ let rand = Math.floor(Math.random() * trials.length)
 condition = trials[rand];
 conditionStr = conditions[rand];
 
-var k = 7;
+var k = 1;
 const numTrials = trials.length * k;
 let currentTrialIndex = -1;
 const pageDelay = 0;
@@ -231,6 +231,7 @@ function nextTrial() {
     currentTrialIndex += 1;
     if (currentTrialIndex >= numTrials) {
         console.log(0.001 * (new Date() - startTime))
+        allResults[conditionStr] = results; // make sure results for last condition added
         finishTrials();
     }
     else {
@@ -261,6 +262,7 @@ function finishTrials() {
     $("#demographicsPage").show();
     const t = jsQUEST.QuestMean(q);
     const sd = jsQUEST.QuestSd(q);
+    console.log(q)
 
     console.log(`Final threshold estimate (mean+-sd) is ${10**t} +- ${sd}`)
     console.log(`Mode threshold estimate is ${10**jsQUEST.QuestMode(q).mode}, and the pdf is ${jsQUEST.QuestMode(q).pdf}`)
@@ -274,6 +276,7 @@ function verifyAndGatherData() {
         let data = {
             gender: $("select[name=gender]").find(":selected").text(),
             age: potentialAge,
+            device: $("select[name=device]").find(":selected").text(),
             education: $("select[name=education]").find(":selected").text(),
             experience: $("select[name=experience]").find(":selected").text(),
             vision: $("select[name=vision]").find(":selected").text(),
