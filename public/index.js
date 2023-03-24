@@ -57,54 +57,52 @@ function interp1(xs, vs, xqs, method) {
     return yqs.slice();
 }
 
-const trials_TD = [
-    ["TD200random35.jpg", "TD200random35.jpg", "TD200random45.jpg"],
-    ["TD200random50.jpg", "TD200random50.jpg", "TD200random60.jpg"],
-    // ["TD200random65.jpg", "TD200random75.jpg"],
-    ["TD100random35.jpg", "TD100random35.jpg", "TD100random45.jpg"],
-    ["TD100random50.jpg", "TD100random50.jpg", "TD100random60.jpg"],
-    ["TD100random65.jpg", "TD100random65.jpg", "TD100random75.jpg"],
-    // ["TD60random35.jpg", "TD60random45.jpg"],
-    // ["TD60random50.jpg", "TD60random60.jpg"],
-    // ["TD60random65.jpg", "TD60random75.jpg"],
-    // ["TD30random33.jpg", "TD30random43.jpg"],
-    // ["TD30random50.jpg", "TD30random60.jpg"],
-    // // ["TD30random65.jpg", "TD30random75.jpg"],
-    // //
-    ["TD200cluster35.jpg","TD200cluster35.jpg", "TD200cluster45.jpg"],
-    ["TD200cluster50.jpg", "TD200cluster50.jpg", "TD200cluster60.jpg"],
-    ["TD200cluster65.jpg", "TD200cluster65.jpg","TD200cluster75.jpg"],
-    // ["TD100cluster35.jpg", "TD100cluster45.jpg"],
-    // ["TD100cluster50.jpg", "TD100cluster60.jpg"],
-    // ["TD100cluster65.jpg", "TD100cluster75.jpg"],
-    // ["TD200cluster50-unc.jpg", "TD200cluster60-unc.jpg"],
-    // ["TD100cluster50-unc.jpg", "TD100cluster60-unc.jpg"],
+// For each trial: ref50, stim50 + stimX
+// Need to ensure same stim50 is not seen in a row.
+// Ref can be kept the same.
+
+// 7 trials / condition.
+// Ref is always same (in a condition).
+// For stimuli: list with tGuess for each condition.
+// Pick condition to test (e.g. T200R or F100C)
+    // Pick tGuess for condition (from list).
+    // Create q from tGuess. -> qT200R.
+    // Get tTest value.
+    // Perform 7 trials, decrement k for each.
+        // With tTest: check available stimuli for condition,
+            // e.g. 0.6 (not log) -> check if T200R60.jpg exists.
+            // if e.g. 0.63 -> find nearest value in available values.
+        // Display ref, stim50 and stimTEST
+            // stim50 - maybe remember previously shown and pick another out of 3?
+        // Store trial condition, stimuli, choice, right/wrong.
+        // Update q with 
+    // Once k=0, store threshold estimates in a result list?
+
+
+const trials_T200R = [
+    ["T200R50.jpg", "T200R50a.jpg", "T200R55.jpg"],
+    ["T200R50.jpg", "T200R50a.jpg", "T200R60.jpg"],
+    ["T200R50.jpg", "T200R50a.jpg", "T200R65.jpg"],
+    ["T200R50.jpg", "T200R50a.jpg", "T200R70.jpg"],
+    ["T200R50.jpg", "T200R50a.jpg", "T200R75.jpg"],
+    ["T200R50.jpg", "T200R50a.jpg", "T200R80.jpg"],
+    ["T200R50.jpg", "T200R50a.jpg", "T200R85.jpg"],
+    ["T200R50.jpg", "T200R50a.jpg", "T200R90.jpg"]
 ];
 
-const trials_F = [
-    ["F200random35.jpg", "F200random45.jpg"],
-    ["F200random50.jpg", "F200random60.jpg"],
-    ["F200random65.jpg", "F200random75.jpg"],
-    ["F100random35.jpg", "F100random45.jpg"],
-    ["F100random50.jpg", "F100random60.jpg"],
-    ["F100random65.jpg", "F100random75.jpg"],
-    ["F60random35.jpg", "F60random45.jpg"],
-    ["F60random50.jpg", "F60random60.jpg"],
-    ["F60random65.jpg", "F60random75.jpg"],
-    ["F30random33.jpg", "F30random43.jpg"],
-    ["F30random50.jpg", "F30random60.jpg"],
-    ["F30random65.jpg", "F30random75.jpg"],
-    // Below are all uncorrelated.
-    ["F200cluster35.jpg", "F200cluster45.jpg"],
-    ["F200cluster50.jpg", "F200cluster60.jpg"],
-    ["F200cluster65.jpg", "F200cluster75.jpg"],
-    ["F100cluster35.jpg", "F100cluster45.jpg"],
-    ["F100cluster50.jpg", "F100cluster60.jpg"],
-    ["F100cluster65.jpg", "F100cluster75.jpg"]
+const trials_T100R = [
+    ["T100R50.jpg", "T100R50a.jpg", "T100R55.jpg"],
+    ["T100R50.jpg", "T100R50a.jpg", "T100R60.jpg"],
+    ["T100R50.jpg", "T100R50a.jpg", "T100R65.jpg"],
+    ["T100R50.jpg", "T100R50a.jpg", "T100R70.jpg"],
+    ["T100R50.jpg", "T100R50a.jpg", "T100R75.jpg"],
+    ["T100R50.jpg", "T100R50a.jpg", "T100R80.jpg"],
+    ["T100R50.jpg", "T100R50a.jpg", "T100R85.jpg"],
+    ["T100R50.jpg", "T100R50a.jpg", "T100R90.jpg"]
 ];
 
 //const trials = trials_TD.concat(trials_FP);
-const trials = trials_TD
+const trials = trials_T200R
 
 const trialOrder = [...trials.keys()];
 shuffleArray(trialOrder);
@@ -228,7 +226,7 @@ function nextTrial() {
 }
 
 function finishTrials() {
-    $("#trialPage").hide();
+    //$("#trialPage").hide();
     $("#demographicsPage").show();
     const t = jsQUEST.QuestMean(q);
     const sd = jsQUEST.QuestSd(q);
