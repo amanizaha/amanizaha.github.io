@@ -83,7 +83,8 @@ let rand = Math.floor(Math.random() * trials.length)
 condition = trials[rand];
 conditionStr = conditions[rand];
 
-const numTrials = trials.length * 7;
+var k = 7;
+const numTrials = trials.length * k;
 let currentTrialIndex = -1;
 const pageDelay = 0;
 const trialDelay = 1000;
@@ -104,7 +105,7 @@ let wrongRight = ['wrong', 'right'];
 var q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 2);
 var tTest = jsQUEST.QuestMode(q).mode;
 var currentIntensity = tTest
-var k = 7;
+var prev = ""
 
 // for (let i = 0; i < 7; i++) {
 //     var tTest = jsQUEST.QuestMode(q).mode;
@@ -210,12 +211,6 @@ function getTrialResult(button) {
     }
 }
 
-// Perform 7 trials, decrement k for each.
-        // Display ref, stim50 and stimTEST
-            // stim50 - maybe remember previously shown and pick another out of 3?
-        // Store trial condition, stimuli, choice, right/wrong.
-        // Update q
-    // Once k=0, store threshold estimates in a result list?
 function getClosestIntensity(suggested){
     let goal = 50 + Math.round((10**suggested)*100); // e.g. 61
     const closest = condition.reduce((prev, curr) => {
@@ -228,7 +223,7 @@ function getClosestIntensity(suggested){
     // returns e.g. 60
     let nextIntensity = conditionStr + closest.toString(); // "T200R60"
     currentIntensity = Math.log10((closest - 50)/100)
-    console.log("closest:", closest, "LOG", currentIntensity)
+    console.log("closest:", closest, "log", currentIntensity)
     return nextIntensity
 }
 
@@ -239,7 +234,14 @@ function nextTrial() {
         finishTrials();
     }
     else {
-        let same = conditionStr + "50a"
+        let suffixes = ["a", "b"]
+        let suffix = suffixes[Math.floor(Math.random() * suffixes.length)]
+        while (suffix == prev) {
+            suffix = suffixes[Math.floor(Math.random() * suffixes.length)]
+        }
+        prev = suffix
+
+        let same = conditionStr + "50" + suffix
         let currentStimuli = getClosestIntensity(tTest);
 
         $("#refImage").attr("src", `img/${conditionStr + "50"}.jpg`);
@@ -255,7 +257,7 @@ function nextTrial() {
 }
 
 function finishTrials() {
-    //$("#trialPage").hide();
+    $("#trialPage").hide();
     $("#demographicsPage").show();
     const t = jsQUEST.QuestMean(q);
     const sd = jsQUEST.QuestSd(q);
@@ -267,7 +269,6 @@ function finishTrials() {
 
 function verifyAndGatherData() {
     let potentialAge = parseInt($("input[name=age]").val(), 10);
-    //let potentialCountry = $("input[name=country]").val();
 
     if (Number.isInteger(potentialAge)) {
         let data = {
