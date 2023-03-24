@@ -1,19 +1,3 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyC9wQY6bCkr1mUgWxATGNnwSwOSs9JXkb4",
-    authDomain: "thesis-11cc1.firebaseapp.com",
-    projectId: "thesis-11cc1",
-    storageBucket: "thesis-11cc1.appspot.com",
-    messagingSenderId: "118723468214",
-    appId: "1:118723468214:web:914ba2588d74c80a90bf17",
-    measurementId: "G-RDE3Q38VC2",
-    databaseURL: "https://thesis-11cc1-default-rtdb.europe-west1.firebasedatabase.app"
-};
-
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-var ref = db.ref("/");
-
-
 function interp1(xs, vs, xqs, method) {
     if (method === void 0) { method = 'linear'; }
     /*
@@ -79,29 +63,10 @@ function interp1(xs, vs, xqs, method) {
     // Once k=0, store threshold estimates in a result list?
 
 
-const trials_T200R = [
-    ["T200R50.jpg", "T200R50a.jpg", "T200R55.jpg"],
-    ["T200R50.jpg", "T200R50a.jpg", "T200R60.jpg"],
-    ["T200R50.jpg", "T200R50a.jpg", "T200R65.jpg"],
-    ["T200R50.jpg", "T200R50a.jpg", "T200R70.jpg"],
-    ["T200R50.jpg", "T200R50a.jpg", "T200R75.jpg"],
-    ["T200R50.jpg", "T200R50a.jpg", "T200R80.jpg"],
-    ["T200R50.jpg", "T200R50a.jpg", "T200R85.jpg"],
-    ["T200R50.jpg", "T200R50a.jpg", "T200R90.jpg"]
-];
+// Available intensities (exc. base intensity).
+const trials_T200R = [55, 60, 65, 70, 75, 80, 85, 90];
+//["T200R55.jpg", "T200R60.jpg", "T200R65.jpg", "T200R70.jpg", "T200R75.jpg", "T200R80.jpg", "T200R85.jpg", "T200R90.jpg"]
 
-const trials_T100R = [
-    ["T100R50.jpg", "T100R50a.jpg", "T100R55.jpg"],
-    ["T100R50.jpg", "T100R50a.jpg", "T100R60.jpg"],
-    ["T100R50.jpg", "T100R50a.jpg", "T100R65.jpg"],
-    ["T100R50.jpg", "T100R50a.jpg", "T100R70.jpg"],
-    ["T100R50.jpg", "T100R50a.jpg", "T100R75.jpg"],
-    ["T100R50.jpg", "T100R50a.jpg", "T100R80.jpg"],
-    ["T100R50.jpg", "T100R50a.jpg", "T100R85.jpg"],
-    ["T100R50.jpg", "T100R50a.jpg", "T100R90.jpg"]
-];
-
-//const trials = trials_TD.concat(trials_FP);
 const trials = trials_T200R
 
 const trialOrder = [...trials.keys()];
@@ -117,7 +82,8 @@ animate = 2
 const chart_width = 500
 const chart_height = 400
 
-let tGuess = Math.log10(0.2); // Estimate of intensity expected to result in a response rate of pThreshold.
+// tGuess = 20% change threshold, i.e. from 50:50 -> 70:30.
+let tGuess = Math.log10(0.3); // Estimate of intensity expected to result in a response rate of pThreshold.
 let tGuessSd = 2 // 
 let pThreshold = 0.75
 let beta = 3.5; // steepness of curve
@@ -126,10 +92,23 @@ let gamma = 0.5; // The probability of a success (a response of YES) at zero int
 let tActual = 1;
 
 let wrongRight = ['wrong', 'right'];
-var q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 1);
+var q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 2);
 var tTest = jsQUEST.QuestMode(q).mode;
+// if(10**tTest > 0.5) { tTest = Math.log10(0.45) }
+console.log(10**tTest)
+var currentIntensity = tTest
 var k = 7;
 
+// for (let i = 0; i < 7; i++) {
+//     var tTest = jsQUEST.QuestMode(q).mode;
+//     if (10**tTest > 0.5) {
+//         tTest = Math.log10(0.45)
+//     }
+//     let response=jsQUEST.QuestSimulate(q,tTest,tActual)
+//     q = jsQUEST.QuestUpdate(q, tTest, response); 
+//     console.log(tTest, 10**tTest, response)
+// }
+// console.log(10**jsQUEST.QuestMode(q).mode)
 
 setTimeout(() => $("#continueButton").prop("disabled", false), pageDelay);
 $("#welcomeHeading").show();
@@ -171,19 +150,18 @@ function realismSubmit(button) {
     setButtonEnableTimer("realismButton", trialDelay);
     results.push(getTrialResult(button));
     tTest = jsQUEST.QuestMode(q).mode; // what's the next suggested intensity?
-    console.log(tTest, 10**tTest)
+    console.log("SUGGESTED: ", tTest, 10**tTest)
     nextTrial();
 }
 
-// Checks if chosen stimuli depicts same ratio as reference.
-function correctAnswer(chosen, ref) {   
-    // let view = chosen[0];
-    // let n = chosen.substring(2,5);
-    // let arrangement = chosen[5];
-    let ratio = chosen.substring().slice(-2);
-
-    if(ratio == ref.slice(-2)) { return 1 }
-    else { return 0 }
+// Checks if chosen stimuli is correct or not.
+function correctAnswer(chosen, ref) {
+    let char = chosen.slice(-1)
+    if(char.toLowerCase() !== char.toUpperCase()) { // last char is a letter -> CORRECT answer.
+        console.log("RIGHT");
+        return 1;
+    }
+    else { console.log("WRONG"); return 0; }
 }
 
 function getTrialResult(button) {
@@ -197,7 +175,8 @@ function getTrialResult(button) {
     }
 
     let response = correctAnswer(imageString.substring(0, imageString.length - 4), trialLevel.substring(0, trialLevel.length - 4))
-    q = jsQUEST.QuestUpdate(q, tTest, response); // update q with response. Used same intensity as suggested.
+    // console.log("RES is", response, 10**currentIntensity)
+    q = jsQUEST.QuestUpdate(q, currentIntensity, response); //  used intensity may not be same as tTest.
     
     return {
         trialNum: trialOrder[currentTrialIndex],
@@ -207,20 +186,47 @@ function getTrialResult(button) {
     }
 }
 
+// Perform 7 trials, decrement k for each.
+        // Display ref, stim50 and stimTEST
+            // stim50 - maybe remember previously shown and pick another out of 3?
+        // Store trial condition, stimuli, choice, right/wrong.
+        // Update q
+    // Once k=0, store threshold estimates in a result list?
+function getClosestIntensity(suggested){
+    let goal = 50 + Math.round((10**suggested)*100); // e.g. 61
+    const closest = trials_T200R.reduce((prev, curr) => {
+        return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
+    });
+    // remove found value
+    const ind = trials_T200R.indexOf(closest);
+    trials_T200R.splice(ind, 1);
+
+    // returns e.g. 60
+    let condition = "T200R"
+    let nextIntensity = condition + closest.toString(); // "T200R60"
+    currentIntensity = Math.log10((closest - 50)/100)
+    console.log("closest:", closest, "LOG", currentIntensity)
+    return nextIntensity
+}
+
 function nextTrial() {
     currentTrialIndex += 1;
     if (currentTrialIndex >= numTrials) {
         console.log(0.001 * (new Date() - startTime))
         finishTrials();
     } else {
-        $("#refImage").attr("src", `img/${trials[trialOrder[currentTrialIndex]][0]}`);
+        let condition = "T200R50"
+        let same = condition + "a"
+        let currentStimuli = getClosestIntensity(tTest);
+
+        $("#refImage").attr("src", `img/${condition}.jpg`);
         $("#trialNumber").text(`Trial ${currentTrialIndex + 1}/${numTrials}`)
         if (Math.random() < 0.5) {
-            $("#leftImage").attr("src", `img/${trials[trialOrder[currentTrialIndex]][1]}`);
-            $("#rightImage").attr("src", `img/${trials[trialOrder[currentTrialIndex]][2]}`);
+            $("#leftImage").attr("src", `img/${same}.jpg`);
+            $("#rightImage").attr("src", `img/${currentStimuli}.jpg`);
         } else {
-            $("#leftImage").attr("src", `img/${trials[trialOrder[currentTrialIndex]][2]}`);
-            $("#rightImage").attr("src", `img/${trials[trialOrder[currentTrialIndex]][1]}`);
+            $("#leftImage").attr("src", `img/${currentStimuli}.jpg`);
+            $("#rightImage").attr("src", `img/${same}.jpg`);
         }
     }
 }
