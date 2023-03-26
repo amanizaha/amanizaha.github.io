@@ -12,73 +12,20 @@ const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 var ref = db.ref("/");
 
-function interp1(xs, vs, xqs, method) {
-    if (method === void 0) { method = 'linear'; }
-    /*
-     * Throws an error if number of independent sample points is not equal to
-     * the number of dependent values.
-     */
-    if (xs.length !== vs.length) {
-        throw new Error("Arrays of sample points xs and corresponding values vs have to have\n      equal length.");
-    }
-    /* Combine x and v arrays. */
-    var zipped = xs.map(function (x, index) { return [x, vs[index]]; });
-    /* Sort points by independent variabel in ascending order. */
-    zipped.sort(function (a, b) {
-        var diff = a[0] - b[0];
-        /* Check if some x value occurs twice. */
-        if (diff === 0) {
-            throw new Error('Two sample points have equal value ' + a[0] + '. This is not allowed.');
-        }
-        return diff;
-    });
-    /* Extract sorted x and v arrays */
-    var sortedX = [];
-    var sortedV = [];
-    for (var i = 0; i < zipped.length; i++) {
-        var point = zipped[i];
-        sortedX.push(point[0]);
-        sortedV.push(point[1]);
-    }
-    /* Interpolate values */
-    var yqs = xqs.map(function (xq) {
-        /* Determine index of range of query value. */
-        var index = binaryFindIndex(sortedX, xq);
-        /* Check if value lies in interpolation range. */
-        if (index === -1) {
-            throw new Error("Query value " + xq + " lies outside of range. Extrapolation is not\n        supported.");
-        }
-        /* Interpolate value. */
-        return interpolate(sortedV, index, method);
-    });
-    /* Return result. */
-    return yqs.slice();
-}
-
 animate = 2
 const chart_width = 500
 const chart_height = 400
 
-// For each trial: ref50, stim50 + stimX
-// Need to ensure same stim50 is not seen in a row.
-// Ref can be kept the same.
-
-// 7 trials / condition.
-// Ref is always same (in a condition).
-// For stimuli: list with tGuess for each condition.
-// Pick condition to test (e.g. T200R or F100C)
-    // Pick tGuess for condition (from list).
-    // Create q from tGuess. -> qT200R.
-    // Get tTest value.
-    // Perform 7 trials, decrement k for each.
-        // With tTest: check available stimuli for condition,
-            // e.g. 0.6 (not log) -> check if T200R60.jpg exists.
-            // if e.g. 0.63 -> find nearest value in available values.
-        // Display ref, stim50 and stimTEST
-            // stim50 - maybe remember previously shown and pick another out of 3?
-        // Store trial condition, stimuli, choice, right/wrong.
-        // Update q with 
-    // Once k=0, store threshold estimates in a result list?
+// for (let i = 0; i < 7; i++) {
+//     var tTest = jsQUEST.QuestMode(q).mode;
+//     if (10**tTest > 0.5) {
+//         tTest = Math.log10(0.45)
+//     }
+//     let response=jsQUEST.QuestSimulate(q,tTest,tActual)
+//     q = jsQUEST.QuestUpdate(q, tTest, response); 
+//     console.log(tTest, 10**tTest, response)
+// }
+// console.log(10**jsQUEST.QuestMode(q).mode)
 
 
 // Available intensities (exc. base intensity).
@@ -86,8 +33,8 @@ const trials_T200R = [55, 60, 65, 70, 75, 80, 85, 90];
 const trials_T100R = [55, 60, 63, 72, 74, 85, 83, 87];
 const trials_T140R = [52, 60, 63, 72, 74, 85, 83, 87];
 
-const trials = [trials_T200R, trials_T100R]
-const conditions = ["T200R", "T100R"]
+const trials = [trials_T200R]
+const conditions = ["T200R"]
 
 if(trials.length != conditions.length) { throw new Error('Missing trials!'); }
 
@@ -97,13 +44,13 @@ let rand = Math.floor(Math.random() * trials.length)
 condition = trials[rand];
 conditionStr = conditions[rand];
 
-var k = 1;
+var k = 7;
 const numTrials = trials.length * k;
 let currentTrialIndex = -1;
 const pageDelay = 0;
 const trialDelay = 1000;
 let startTime = new Date();
-var results = []
+var results = []    // per condition
 var allResults = {}
 
 // tGuess = 20% change threshold, i.e. from 50:50 -> 70:30.
@@ -121,16 +68,6 @@ var tTest = jsQUEST.QuestMode(q).mode;
 var currentIntensity = tTest
 var prev = ""
 
-// for (let i = 0; i < 7; i++) {
-//     var tTest = jsQUEST.QuestMode(q).mode;
-//     if (10**tTest > 0.5) {
-//         tTest = Math.log10(0.45)
-//     }
-//     let response=jsQUEST.QuestSimulate(q,tTest,tActual)
-//     q = jsQUEST.QuestUpdate(q, tTest, response); 
-//     console.log(tTest, 10**tTest, response)
-// }
-// console.log(10**jsQUEST.QuestMode(q).mode)
 
 setTimeout(() => $("#continueButton").prop("disabled", false), pageDelay);
 $("#welcomeHeading").show();
@@ -212,7 +149,6 @@ function getTrialResult(button) {
     }
 
     let response = correctAnswer(imageString.substring(0, imageString.length - 4), trialLevel.substring(0, trialLevel.length - 4))
-    // console.log("RES is", response, 10**currentIntensity)
     q = jsQUEST.QuestUpdate(q, currentIntensity, response); //  used intensity may not be same as tTest.
     k = k-1;
 
@@ -221,7 +157,8 @@ function getTrialResult(button) {
         trialLeft: $("#leftImage").attr("src"),
         trialRight: $("#rightImage").attr("src"),
         choice: imageString,
-        answer: wrongRight[response]
+        answer: wrongRight[response],
+        intensity: 10**currentIntensity // NOT in log!
     }
 }
 
@@ -237,7 +174,7 @@ function getClosestIntensity(suggested){
     // returns e.g. 60
     let nextIntensity = conditionStr + closest.toString(); // "T200R60"
     currentIntensity = Math.log10((closest - 50)/100)
-    console.log("closest:", closest, "log", currentIntensity)
+    console.log("closest:", closest, "log", 10**currentIntensity)
     return nextIntensity
 }
 
@@ -245,7 +182,8 @@ function nextTrial() {
     currentTrialIndex += 1;
     if (currentTrialIndex >= numTrials) {
         console.log(0.001 * (new Date() - startTime))
-        allResults[conditionStr] = results; // make sure results for last condition added
+        if(conditions.length != allResults.length)
+            allResults[conditionStr] = results; // make sure results for last condition added
         finishTrials();
     }
     else {
@@ -321,3 +259,40 @@ function shuffleArray(array) {
         array[j] = temp;
     }
 }
+
+// FOR CALCULATING THRESHOLD FROM MULTIPLE PARTICIPANTS' RESPONSE
+// let thing = {"gender":"Male","age":1,"device":"Desktop computer","education":"Less than high school degree","experience":"I have never interacted with computer graphics","vision":"normal vision","comments":"","duration":95.968,"trialResults":{"T200R":[{"trialNum":0,"trialLeft":"img/T200R80.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R50a.jpg","answer":"right", "intensity":"0.29999"},{"trialNum":1,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R65.jpg","choice":"img/T200R65.jpg","answer":"wrong", "intensity": "0.15"},{"trialNum":2,"trialLeft":"img/T200R75.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R50a.jpg","answer":"right", "intensity": "0.25"},{"trialNum":3,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R70.jpg","choice":"img/T200R70.jpg","answer":"wrong", "intensity": "0.2"},{"trialNum":4,"trialLeft":"img/T200R50a.jpg","trialRight":"img/T200R85.jpg","choice":"img/T200R50a.jpg","answer":"right", "intensity": "0.35"},{"trialNum":5,"trialLeft":"img/T200R60.jpg","trialRight":"img/T200R50b.jpg","choice":"img/T200R60.jpg","answer":"wrong", "intensity": "0.1"},{"trialNum":6,"trialLeft":"img/T200R50a.jpg","trialRight":"img/T200R90.jpg","choice":"img/T200R50a.jpg","answer":"right", "intensity": "0.4"}],"undefined":[]}}
+// thing = thing.trialResults.T200R
+
+// let thing2 = {"gender":"Male","age":2,"device":"Desktop computer","education":"Less than high school degree","experience":"I have never interacted with computer graphics","vision":"normal vision","comments":"","duration":33.999,"trialResults":{"T200R":[{"trialNum":0,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R80.jpg","choice":"img/T200R80.jpg","answer":"wrong", "intensity": "0.29999"},{"trialNum":1,"trialLeft":"img/T200R90.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R50a.jpg","answer":"right", "intensity": "0.4"},{"trialNum":2,"trialLeft":"img/T200R85.jpg","trialRight":"img/T200R50b.jpg","choice":"img/T200R50b.jpg","answer":"right", "intensity": "0.35"},{"trialNum":3,"trialLeft":"img/T200R75.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R50a.jpg","answer":"right", "intensity": "0.25"},{"trialNum":4,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R70.jpg","choice":"img/T200R70.jpg","answer":"wrong", "intensity": "0.2"},{"trialNum":5,"trialLeft":"img/T200R50a.jpg","trialRight":"img/T200R65.jpg","choice":"img/T200R65.jpg","answer":"wrong", "intensity": "0.15"},{"trialNum":6,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R60.jpg","choice":"img/T200R60.jpg","answer":"wrong", "intensity": "0.1"}],"undefined":[]}}
+// thing2 = thing2.trialResults.T200R
+
+// let thing3 = {"gender":"Male","age":8,"device":"Desktop computer","education":"Less than high school degree","experience":"I have never interacted with computer graphics","vision":"normal vision","comments":"","duration":55.531,"trialResults":{"T200R":[{"trialNum":0,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R80.jpg","choice":"img/T200R50b.jpg","answer":"right","intensity":0.29999999999999993},{"trialNum":1,"trialLeft":"img/T200R65.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R65.jpg","answer":"wrong","intensity":0.15},{"trialNum":2,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R75.jpg","choice":"img/T200R50b.jpg","answer":"right","intensity":0.25},{"trialNum":3,"trialLeft":"img/T200R70.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R70.jpg","answer":"wrong","intensity":0.2},{"trialNum":4,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R85.jpg","choice":"img/T200R50b.jpg","answer":"right","intensity":0.35},{"trialNum":5,"trialLeft":"img/T200R50a.jpg","trialRight":"img/T200R60.jpg","choice":"img/T200R50a.jpg","answer":"right","intensity":0.1},{"trialNum":6,"trialLeft":"img/T200R90.jpg","trialRight":"img/T200R50b.jpg","choice":"img/T200R50b.jpg","answer":"right","intensity":0.4}],"undefined":[]}}
+// thing3 = thing3.trialResults.T200R
+
+// let thing4 = {"gender":"Male","age":66,"device":"Desktop computer","education":"Less than high school degree","experience":"I have never interacted with computer graphics","vision":"normal vision","comments":"","duration":19.989,"trialResults":{"T200R":[{"trialNum":0,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R80.jpg","choice":"img/T200R50b.jpg","answer":"right","intensity":0.29999999999999993},{"trialNum":1,"trialLeft":"img/T200R65.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R50a.jpg","answer":"right","intensity":0.15},{"trialNum":2,"trialLeft":"img/T200R60.jpg","trialRight":"img/T200R50b.jpg","choice":"img/T200R60.jpg","answer":"wrong","intensity":0.1},{"trialNum":3,"trialLeft":"img/T200R70.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R70.jpg","answer":"wrong","intensity":0.2},{"trialNum":4,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R75.jpg","choice":"img/T200R50b.jpg","answer":"right","intensity":0.25},{"trialNum":5,"trialLeft":"img/T200R50a.jpg","trialRight":"img/T200R85.jpg","choice":"img/T200R50a.jpg","answer":"right","intensity":0.35},{"trialNum":6,"trialLeft":"img/T200R55.jpg","trialRight":"img/T200R50b.jpg","choice":"img/T200R55.jpg","answer":"wrong","intensity":0.04999999999999999}],"undefined":[]}}
+// thing4 = thing4.trialResults.T200R
+
+// let thing5 = {"gender":"Male","age":19,"device":"Desktop computer","education":"Less than high school degree","experience":"I have never interacted with computer graphics","vision":"normal vision","comments":"","duration":22.244,"trialResults":{"T200R":[{"trialNum":0,"trialLeft":"img/T200R80.jpg","trialRight":"img/T200R50b.jpg","choice":"img/T200R50b.jpg","answer":"right","intensity":0.29999999999999993},{"trialNum":1,"trialLeft":"img/T200R65.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R50a.jpg","answer":"right","intensity":0.15},{"trialNum":2,"trialLeft":"img/T200R60.jpg","trialRight":"img/T200R50b.jpg","choice":"img/T200R60.jpg","answer":"wrong","intensity":0.1},{"trialNum":3,"trialLeft":"img/T200R70.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R70.jpg","answer":"wrong","intensity":0.2},{"trialNum":4,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R75.jpg","choice":"img/T200R50b.jpg","answer":"right","intensity":0.25},{"trialNum":5,"trialLeft":"img/T200R85.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R50a.jpg","answer":"right","intensity":0.35},{"trialNum":6,"trialLeft":"img/T200R55.jpg","trialRight":"img/T200R50b.jpg","choice":"img/T200R55.jpg","answer":"wrong","intensity":0.04999999999999999}],"undefined":[]}}
+// thing5 = thing5.trialResults.T200R
+
+// let thing6 = {"gender":"Male","age":27,"device":"Desktop computer","education":"Less than high school degree","experience":"I have never interacted with computer graphics","vision":"normal vision","comments":"","duration":15.322000000000001,"trialResults":{"T200R":[{"trialNum":0,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R80.jpg","choice":"img/T200R50b.jpg","answer":"right","intensity":0.29999999999999993},{"trialNum":1,"trialLeft":"img/T200R65.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R65.jpg","answer":"wrong","intensity":0.15},{"trialNum":2,"trialLeft":"img/T200R75.jpg","trialRight":"img/T200R50b.jpg","choice":"img/T200R75.jpg","answer":"wrong","intensity":0.25},{"trialNum":3,"trialLeft":"img/T200R90.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R50a.jpg","answer":"right","intensity":0.4},{"trialNum":4,"trialLeft":"img/T200R85.jpg","trialRight":"img/T200R50b.jpg","choice":"img/T200R50b.jpg","answer":"right","intensity":0.35},{"trialNum":5,"trialLeft":"img/T200R70.jpg","trialRight":"img/T200R50a.jpg","choice":"img/T200R50a.jpg","answer":"right","intensity":0.2},{"trialNum":6,"trialLeft":"img/T200R50b.jpg","trialRight":"img/T200R60.jpg","choice":"img/T200R50b.jpg","answer":"right","intensity":0.1}],"undefined":[]}}
+// thing6 = thing6.trialResults.T200R
+
+// var x = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 2);
+// var things = [thing, thing2, thing3, thing4, thing5, thing6]
+
+// for (let j = 0; j < 6; j++) {
+//     let curr = things[j]
+//     for (let i = 0; i < 7; i++) {
+//         console.log(curr[i])
+
+//         let response = curr[i].answer=="right" ? 1 : 0;
+//         console.log(response)
+//         let test = Math.log10( parseFloat(curr[i].intensity) )
+//         x = jsQUEST.QuestUpdate(x, test, response); 
+//     }
+// }
+
+// console.log("answer is", 10**jsQUEST.QuestMode(x).mode)
+// console.log("sd:", jsQUEST.QuestSd(x))
