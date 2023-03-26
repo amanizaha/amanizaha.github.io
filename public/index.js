@@ -1,3 +1,17 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyC9wQY6bCkr1mUgWxATGNnwSwOSs9JXkb4",
+    authDomain: "thesis-11cc1.firebaseapp.com",
+    projectId: "thesis-11cc1",
+    storageBucket: "thesis-11cc1.appspot.com",
+    messagingSenderId: "118723468214",
+    appId: "1:118723468214:web:914ba2588d74c80a90bf17",
+    measurementId: "G-RDE3Q38VC2",
+    databaseURL: "https://thesis-11cc1-default-rtdb.europe-west1.firebasedatabase.app"
+};
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+var ref = db.ref("/");
+
 function interp1(xs, vs, xqs, method) {
     if (method === void 0) { method = 'linear'; }
     /*
