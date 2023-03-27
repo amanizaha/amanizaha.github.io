@@ -31,12 +31,12 @@ const chart_height = 400
 const trials_T280R = [55, 60, 65, 70, 75, 80, 85, 90];
 const trials_T200R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 78, 80, 90];
 const trials_T140R = [52, 55, 56, 60, 62, 65, 67, 70, 72, 75, 80, 85, 90];
-const trials_T100R = [52, 55, 56, 57, 60, 62, 64, 65, 67, 70, 75, 80, 85, 90];
+const trials_T100R = [52, 55, 56, 57, 60, 62, 64, 65, 70, 75, 80, 85, 90];
 
 const trials_T280C = [55, 60, 65, 70, 75, 80, 85, 90];
-const trials_T200C = [55, 60, 65, 67, 70, 72, 75, 80, 90];
-const trials_T140C = [52, 55, 56, 60, 62, 65, 67, 70, 72, 75, 80, 90];
-const trials_T100C = [52, 55, 56, 57, 60, 62, 64, 65, 67, 70, 75, 80, 85, 90];
+const trials_T200C = [55, 60, 65, 67, 70, 72, 75, 80,85];
+const trials_T140C = [52, 55, 60, 62, 65, 67, 70, 72, 75, 80, 90];
+const trials_T100C = [52, 55, 56, 57, 60, 62, 64, 65, 67, 70, 80, 85];
 
 const trials_F280R = [60, 65, 70, 75, 80, 85, 90];
 const trials_F200R = [55, 60, 65, 67, 70, 72, 75, 78, 80, 90];
@@ -44,10 +44,11 @@ const trials_F140R = [55, 60, 65, 67, 70, 72, 75, 80, 85, 90];
 const trials_F100R = [55, 56, 60, 62, 65, 67, 70, 75, 80, 85, 90];
 
 const trials_F280C = [55, 60, 65, 70, 75, 80, 85, 90];
-const trials_F200C = [55, 60, 62, 65, 67, 70, 72, 75, 80, 90];
-const trials_F140C = [52, 55, 56, 60, 62, 65, 67, 70, 72, 75, 80, 90];
-const trials_F100C = [52, 55, 57, 60, 62, 64, 65, 67, 70, 80, 90];
+const trials_F200C = [55, 60, 62, 65, 70, 72, 75, 80, 90];
+const trials_F140C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 80, 90];
+const trials_F100C = [52, 55, 56, 60, 62, 64, 65, 67, 70, 75, 80, 90];
 
+// git push --mirror git@github.com:amanizaha/amanizaha.github.io.git
 
 const trials = [trials_T280R, trials_T200R, trials_T140R, trials_T100R, trials_T280C, trials_T200C, trials_T140C, trials_T100C, trials_F280R, trials_F200R, trials_F140R, trials_F100R, trials_F280C, trials_F200C, trials_F140C, trials_F100C];
 const conditions = ["T280R", "T200R", "T140R", "T100R", "T280C", "T200C", "T140C", "T100C", "F280R", "F200R", "F140R", "F100R", "F280C", "F200C", "F140C", "F100C"]
@@ -69,6 +70,7 @@ const trialDelay = 1000;
 let startTime = new Date();
 var results = []    // per condition
 var allResults = {}
+var correctAnswers = 0;
 
 // tGuess = 20% change threshold, i.e. from 50:50 -> 70:30.
 const tGuess = Math.log10(0.3); // Estimate of intensity expected to result in a response rate of pThreshold.
@@ -81,7 +83,7 @@ let tActual = 1;
 
 var timer = '';
 let wrongRight = ['wrong', 'right'];
-var q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 2);
+var q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 3);
 var tTest = jsQUEST.QuestMode(q).mode;
 var currentIntensity = tTest
 var prev = ""
@@ -167,7 +169,7 @@ function realismSubmit(button) {
         conditionStr = conditions[rand];    
 
         // Need to reset all values for the next 7 Quest trials
-        q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 2);
+        q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 3);
         tTest = jsQUEST.QuestMode(q).mode;
         currentIntensity = tTest
         prev = ""
@@ -199,6 +201,7 @@ function getTrialResult(button) {
     let response = correctAnswer(imageString.substring(0, imageString.length - 4), trialLevel.substring(0, trialLevel.length - 4))
     q = jsQUEST.QuestUpdate(q, currentIntensity, response); //  used intensity may not be same as tTest.
     k = k-1;
+    correctAnswers += response;
 
     return {
         trialNum: currentTrialIndex,
@@ -247,6 +250,8 @@ function nextTrial() {
 
         $("#refImage").attr("src", `img/${conditionStr + "50"}.jpg`);
         $("#trialNumber").text(`Trial ${currentTrialIndex + 1}/${numTrials}`)
+        console.log(correctAnswers)
+        $("#trialsCorrect").text(`Correct ${correctAnswers}`)
 
         randord = Math.random()
         if (randord < 0.5) {

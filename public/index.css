@@ -92,6 +92,12 @@ h1 {
     color:orangered;
 }
 
+#trialsCorrect {
+    position: absolute;
+    right: 5em;
+    top: 3em;
+}
+
 #trialPage table {
     margin: auto;
 }
