@@ -28,12 +28,29 @@ const chart_height = 400
 // console.log(10**jsQUEST.QuestMode(q).mode)
 
 // Available intensities (exc. base intensity).
-const trials_T200R = [55, 60, 62, 65, 67, 68, 70, 72, 75, 77, 80, 85, 90];
-const trials_T100R = [55, 60, 63, 72, 74, 85, 83, 87];
-const trials_T140R = [52, 60, 63, 72, 74, 85, 83, 87];
+const trials_T280R = [55, 60, 65, 70, 75, 80, 85, 90];
+const trials_T200R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 78, 80, 90];
+const trials_T140R = [52, 55, 56, 60, 62, 65, 67, 70, 72, 75, 80, 85, 90];
+const trials_T100R = [52, 55, 56, 57, 60, 62, 64, 65, 67, 70, 75, 80, 85, 90];
 
-const trials = [trials_T200R, trials_T100R, trials_T140R]
-const conditions = ["T200R", "T100R", "T140R"]
+const trials_T280C = [55, 60, 65, 70, 75, 80, 85, 90];
+const trials_T200C = [55, 60, 65, 67, 70, 72, 75, 80, 90];
+const trials_T140C = [52, 55, 56, 60, 62, 65, 67, 70, 72, 75, 80, 90];
+const trials_T100C = [52, 55, 56, 57, 60, 62, 64, 65, 67, 70, 75, 80, 85, 90];
+
+const trials_F280R = [60, 65, 70, 75, 80, 85, 90];
+const trials_F200R = [55, 60, 65, 67, 70, 72, 75, 78, 80, 90];
+const trials_F140R = [55, 60, 65, 67, 70, 72, 75, 80, 85, 90];
+const trials_F100R = [55, 56, 60, 62, 65, 67, 70, 75, 80, 85, 90];
+
+const trials_F280C = [55, 60, 65, 70, 75, 80, 85, 90];
+const trials_F200C = [55, 60, 62, 65, 67, 70, 72, 75, 80, 90];
+const trials_F140C = [52, 55, 56, 60, 62, 65, 67, 70, 72, 75, 80, 90];
+const trials_F100C = [52, 55, 57, 60, 62, 64, 65, 67, 70, 80, 90];
+
+
+const trials = [trials_T280R, trials_T200R, trials_T140R, trials_T100R, trials_T280C, trials_T200C, trials_T140C, trials_T100C, trials_F280R, trials_F200R, trials_F140R, trials_F100R, trials_F280C, trials_F200C, trials_F140C, trials_F100C];
+const conditions = ["T280R", "T200R", "T140R", "T100R", "T280C", "T200C", "T140C", "T100C", "F280R", "F200R", "F140R", "F100R", "F280C", "F200C", "F140C", "F100C"]
 
 if(trials.length != conditions.length) { throw new Error('Missing trials!'); }
 
@@ -43,7 +60,7 @@ let rand = Math.floor(Math.random() * trials.length)
 condition = trials[rand];
 conditionStr = conditions[rand];
 
-const trialsPerBlock = 3;
+const trialsPerBlock = 7;
 var k = trialsPerBlock;
 const numTrials = trials.length * k;
 let currentTrialIndex = -1;
@@ -106,7 +123,7 @@ function startTrials() {
 }
 
 function shuffleTrial(currentStimuli, same, order){
-    let suffixes = ["a", "b"]
+    let suffixes = ["a", "b", "c"]
     let suffix = suffixes[Math.floor(Math.random() * suffixes.length)]
     while (suffix == prev) {
         suffix = suffixes[Math.floor(Math.random() * suffixes.length)]
@@ -131,10 +148,11 @@ function realismSubmit(button) {
 
     results.push(getTrialResult(button));
     tTest = jsQUEST.QuestMode(q).mode; // what's the next suggested intensity?
+    console.log("SUGGESTED:", 10**tTest)
 
     if (k == 0) { // current CONDITION done
-        console.log("NEXT CONDITION")
         results.push({'mode': 10**jsQUEST.QuestMode(q).mode}) // FOR PILOT TEST
+        console.log("FINAL MODE:",10**jsQUEST.QuestMode(q).mode)
         allResults[conditionStr] = results; // add all results for 'completed' condition
         results = []
         k = trialsPerBlock;
@@ -153,7 +171,6 @@ function realismSubmit(button) {
         tTest = jsQUEST.QuestMode(q).mode;
         currentIntensity = tTest
         prev = ""
-        console.log("NEW:", tTest)
         nextTrial();
     }
     else { nextTrial() }
@@ -240,7 +257,7 @@ function nextTrial() {
             $("#rightImage").attr("src", `img/${same}.jpg`);
         }
 
-        timer = setInterval(() => {shuffleTrial(currentStimuli, conditionStr+"50", randord)}, 12000)
+        timer = setInterval(() => {shuffleTrial(currentStimuli, conditionStr+"50", randord)}, 15000)
     }
 }
 
@@ -255,11 +272,10 @@ function finishTrials() {
     $("#demographicsPage").show();
     const t = jsQUEST.QuestMean(q);
     const sd = jsQUEST.QuestSd(q);
-    console.log(q)
 
-    console.log(`Final threshold estimate (mean+-sd) is ${10**t} +- ${sd}`)
-    console.log(`Mode threshold estimate is ${10**jsQUEST.QuestMode(q).mode}, and the pdf is ${jsQUEST.QuestMode(q).pdf}`)
-    console.log(`You set the true threshold to ${tActual}`)
+    // console.log(`Final threshold estimate (mean+-sd) is ${10**t} +- ${sd}`)
+    // console.log(`Mode threshold estimate is ${10**jsQUEST.QuestMode(q).mode}, and the pdf is ${jsQUEST.QuestMode(q).pdf}`)
+    // console.log(`You set the true threshold to ${tActual}`)
 }
 
 function verifyAndGatherData() {
