@@ -6,17 +6,17 @@
 </head>
 <body>
 
+    <h1 id="welcomeHeading">Welcome</h1>
     <div id="screenSizeWarning" class="page">
-        <h2>Screen size too small</h2>
-        <p>The size of your screen is too small to effectively display the tasks. Switch to a larger screen, specifically a computer monitor larger than 1000x600.</p>
+        <h2 style="color: red;">Screen size too small</h2>
+        <p>The size of your screen is too small to effectively display the tasks. Please switch to a larger screen, specifically a computer monitor larger than 1000x600.</p>
         <p id="screenSize"></p>
     </div>
-    <h1 id="welcomeHeading">Welcome</h1>
 
     <div id="consentPage" class="page">
         <h2>Consent</h2>
         <p>
-            In this task, you will be presented with computer-generated imagery of forests. We are interested in seeing how you perceive these images. The task will take approximately X minutes.
+            In this task, you will be presented with computer-generated images of groups of trees. We are interested in seeing how you perceive these images. The task will take 10-20 minutes.
         </p>
         <br>
         <p>
@@ -27,54 +27,47 @@
         <button id="continueButton" class="centerButton" disabled onclick="continueButtonPressed()">Continue</button>
     </div>
 
-    <div id="instructionPage" class="page">
-        <h2>Instructions</h2>
+    <div id="instructionPage" style="" class="page">
+        <h1>Instructions</h1>
         <p>
-            In this task, you will be shown two images side by side, both showing a forest with trees.
+            In each trial of this experiment, you will be shown three images: one <strong>reference image</strong>, and two images for you to choose between. There will be 84 trials in total.
         </p>
         <br>
         <p>
-            Your task is to answer whether you think both images show the same collection of trees. You answer by clicking either 'yes' or 'no'.
+            <span style="color: red;">YOUR TASK</span> is to choose which one of the two images you think contains the same collection of trees as the reference. On the next page, you will be shown an example.
         </p>
         <br>
         <p>
-            There will be a total of Y image pairs, and for each of these you need to choose whether the same set of trees is shown in both images.
+            <span style="color: red;">TIME LIMIT:</span> There is no time limit for the experiment, but for each trial, the images will be shuffled/updated if you haven't chosen within 20 seconds.
         </p>
         <br>
         <p>
-            If the page contents look like they don't fit the window at any point, please zoom the page out by pressing CTRL and - together.
+            If the page contents look like they don't fit the window at any point, please zoom the page out by pressing CTRL and - together. (If you are using a Mac, press Command instead of CTRL.)
         </p>
         <br>
-        <button id="trialStartButton" class="centerButton" disabled onclick="trialStartButtonPressed()">Start</button>
+        <button id="refStartButton" class="centerButton" onclick="startButtonPressed()">Continue</button>
+
     </div>
 
     <div id="referencePage" class="page">
-        <h2>Reference images</h2>
+        <h1 style="color: red;">Example</h1>
         <p>
-            Here is a collection of images showing the appearance of lichens in real life. Familiarize yourself with the appearance of the lichens, then click Start task below to move on to the rating task.
+            Below is an example of the task. The first image (top) is the <strong>reference</strong>. In each task, you will need to compare the two choice images (bottom) to the reference image. You will choose by clicking either the 'left' or 'right' button.
         </p>
         <br>
-        <table>
-            <tr>
-                <td>
-                    <img src="img/ref1.jpg">
-                    <a href="https://pxhere.com/en/photo/1369678" target="_blank">source</a>
-                </td>
-                <td>
-                    <img src="img/ref2.jpg">
-                    <a href="https://www.maxpixel.net/Nature-Moss-Rocks-Rock-Texture-Stone-Lichen-1461368" target="_blank">source</a>
-                </td>
-                <td>
-                    <img src="img/ref3.jpg">
-                    <a href="https://www.flickr.com/photos/gemstone/2624337546/in/photostream/" target="_blank">source</a>
-                </td>
-            </tr>
-        </table>
+        <div style="display: flex; flex-direction: column; margin-top: 1em;">
+            <img style="height: 7em; object-fit: contain; margin-bottom: 1em;" src="img/T200R50.jpg">
+            <div style="display: flex; justify-content: center;">
+                <img style="height: 7em; margin-right: 0.5em;" src="img/T200R50.jpg">
+                <img style="height: 7em; margin-left: 0.5em;" src="img/T200R50.jpg">
+            </div>
+        </div>
         <br>
-        <button id="trialStartButton" class="centerButton" disabled onclick="trialStartButtonPressed()">Start task</button>
+        <button id="trialStartButton" class="centerButton" disabled onclick="trialStartButtonPressed()">START TASK</button>
     </div>
 
     <div id="trialPage" class="page">
+        <h2 id="trialNumber">Trial x/y</h2>
       <div id="imagesContainer">
         <div id="refImageContainer">
           <table>
@@ -118,7 +111,8 @@
         </div>
       </div>
       <h1 id="trialHeading">Which image shows the same collection of trees as the reference?</h1>
-      <h2 id="trialNumber">Trial x/y</h2>
+      
+
     </div>
     </div>
 

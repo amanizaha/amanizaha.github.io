@@ -27,14 +27,13 @@ const chart_height = 400
 // }
 // console.log(10**jsQUEST.QuestMode(q).mode)
 
-
 // Available intensities (exc. base intensity).
-const trials_T200R = [55, 60, 65, 70, 75, 80, 85, 90];
+const trials_T200R = [55, 60, 62, 65, 67, 68, 70, 72, 75, 77, 80, 85, 90];
 const trials_T100R = [55, 60, 63, 72, 74, 85, 83, 87];
 const trials_T140R = [52, 60, 63, 72, 74, 85, 83, 87];
 
-const trials = [trials_T200R]
-const conditions = ["T200R"]
+const trials = [trials_T200R, trials_T100R, trials_T140R]
+const conditions = ["T200R", "T100R", "T140R"]
 
 if(trials.length != conditions.length) { throw new Error('Missing trials!'); }
 
@@ -44,7 +43,8 @@ let rand = Math.floor(Math.random() * trials.length)
 condition = trials[rand];
 conditionStr = conditions[rand];
 
-var k = 7;
+const trialsPerBlock = 3;
+var k = trialsPerBlock;
 const numTrials = trials.length * k;
 let currentTrialIndex = -1;
 const pageDelay = 0;
@@ -54,20 +54,22 @@ var results = []    // per condition
 var allResults = {}
 
 // tGuess = 20% change threshold, i.e. from 50:50 -> 70:30.
-let tGuess = Math.log10(0.3); // Estimate of intensity expected to result in a response rate of pThreshold.
-let tGuessSd = 2 // 
-let pThreshold = 0.75
-let beta = 3.5; // steepness of curve
-let delta = 0.01 // fraction of blindly pressed trials
-let gamma = 0.5; // The probability of a success (a response of YES) at zero intensity.
+const tGuess = Math.log10(0.3); // Estimate of intensity expected to result in a response rate of pThreshold.
+const tGuessSd = 2 // 
+const pThreshold = 0.75
+const beta = 3.5; // steepness of curve
+const delta = 0.01 // fraction of blindly pressed trials
+const gamma = 0.5; // The probability of a success (a response of YES) at zero intensity.
 let tActual = 1;
 
+var timer = '';
 let wrongRight = ['wrong', 'right'];
 var q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 2);
 var tTest = jsQUEST.QuestMode(q).mode;
 var currentIntensity = tTest
 var prev = ""
-
+var randord = 0;
+var it = 0;
 
 setTimeout(() => $("#continueButton").prop("disabled", false), pageDelay);
 $("#welcomeHeading").show();
@@ -83,7 +85,7 @@ function continueButtonPressed() {
     $("#consentPage").hide();
     $("#instructionPage").show();
     $("#welcomeHeading").hide();
-    setTimeout(() => $("#trialStartButton").prop("disabled", false), pageDelay);
+    setTimeout(() => $("#refStartButton").prop("disabled", false), pageDelay);
 }
 
 function startButtonPressed() {
@@ -93,8 +95,7 @@ function startButtonPressed() {
 }
 
 function trialStartButtonPressed() {
-    //$("#referencePage").hide();
-    $("#instructionPage").hide();
+    $("#referencePage").hide();
     startTrials();
 }
 
@@ -104,25 +105,55 @@ function startTrials() {
     nextTrial();
 }
 
+function shuffleTrial(currentStimuli, same, order){
+    let suffixes = ["a", "b"]
+    let suffix = suffixes[Math.floor(Math.random() * suffixes.length)]
+    while (suffix == prev) {
+        suffix = suffixes[Math.floor(Math.random() * suffixes.length)]
+    }
+    prev = suffix
+    let newSame = same + suffix
+
+    if (order<0.5) {
+        $("#leftImage").attr("src", `img/${currentStimuli}.jpg`);
+        $("#rightImage").attr("src", `img/${newSame}.jpg`);
+        it = 1;
+    } else {
+        $("#leftImage").attr("src", `img/${newSame}.jpg`);
+        $("#rightImage").attr("src", `img/${currentStimuli}.jpg`);
+        it = 0;
+    }
+}
+
 function realismSubmit(button) {
     setButtonEnableTimer("realismButton", trialDelay);
+    clearInterval(timer); // button is clicked -> stop timer
+
     results.push(getTrialResult(button));
     tTest = jsQUEST.QuestMode(q).mode; // what's the next suggested intensity?
-    //console.log("SUGGESTED: ", tTest, 10**tTest)
 
     if (k == 0) { // current CONDITION done
+        console.log("NEXT CONDITION")
+        results.push({'mode': 10**jsQUEST.QuestMode(q).mode}) // FOR PILOT TEST
         allResults[conditionStr] = results; // add all results for 'completed' condition
         results = []
+        k = trialsPerBlock;
 
-        k = 7;
         let ind = trials.indexOf(condition); // removes previous condition from trials.
         trials.splice(ind, 1);
-        ind = conditions.indexOf(conditionStr); // removes previous condition from trials.
+        ind = conditions.indexOf(conditionStr); // removes previous condition NAME from trials.
         conditions.splice(ind, 1);
 
         let rand = Math.floor(Math.random() * trials.length)
-        condition = trials[rand];
-        conditionStr = conditions[rand];
+        condition = trials[rand];                   // picks next block of trials to run
+        conditionStr = conditions[rand];    
+
+        // Need to reset all values for the next 7 Quest trials
+        q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 2);
+        tTest = jsQUEST.QuestMode(q).mode;
+        currentIntensity = tTest
+        prev = ""
+        console.log("NEW:", tTest)
         nextTrial();
     }
     else { nextTrial() }
@@ -181,8 +212,8 @@ function getClosestIntensity(suggested){
 function nextTrial() {
     currentTrialIndex += 1;
     if (currentTrialIndex >= numTrials) {
-        console.log(0.001 * (new Date() - startTime))
         if(conditions.length != allResults.length)
+            results.push({'mode': 10**jsQUEST.QuestMode(q).mode}) // FOR PILOT TEST
             allResults[conditionStr] = results; // make sure results for last condition added
         finishTrials();
     }
@@ -199,14 +230,24 @@ function nextTrial() {
 
         $("#refImage").attr("src", `img/${conditionStr + "50"}.jpg`);
         $("#trialNumber").text(`Trial ${currentTrialIndex + 1}/${numTrials}`)
-        if (Math.random() < 0.5) {
+
+        randord = Math.random()
+        if (randord < 0.5) {
             $("#leftImage").attr("src", `img/${same}.jpg`);
             $("#rightImage").attr("src", `img/${currentStimuli}.jpg`);
         } else {
             $("#leftImage").attr("src", `img/${currentStimuli}.jpg`);
             $("#rightImage").attr("src", `img/${same}.jpg`);
         }
+
+        timer = setInterval(() => {shuffleTrial(currentStimuli, conditionStr+"50", randord)}, 12000)
     }
+}
+
+function getTime(){
+    let time = 0.001 * (new Date() - startTime)
+    console.log(time)
+    setTimeout(() => console.log("hey"), 10);
 }
 
 function finishTrials() {

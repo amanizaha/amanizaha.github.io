@@ -22,10 +22,12 @@ h1 {
 
 #screenSizeWarning {
     display: none;
+    width: 70%;
 }
 
 #consentPage {
     display: none;
+    width: 70%;
 }
 
 #consentPage p {
@@ -42,6 +44,8 @@ h1 {
 
 #instructionPage {
     display: none;
+    margin: auto;
+    width: 70%;
 }
 
 #instructionPage p {
@@ -55,6 +59,7 @@ h1 {
 
 #referencePage {
     display: none;
+    width: 60%;
 }
 
 #referencePage p {
@@ -80,10 +85,10 @@ h1 {
 }
 
 #trialNumber {
-    /* position: fixed;
-    right: 10em;
-    bottom: 5em; */
-    margin-top: 5em;
+    position: absolute;
+    right: 5em;
+    top: 1em;
+    margin-top: 0em;
     color:orangered;
 }
 
