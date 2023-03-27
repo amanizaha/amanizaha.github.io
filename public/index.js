@@ -15,7 +15,6 @@ var ref = db.ref("/");
 animate = 2
 const chart_width = 500
 const chart_height = 400
-
 // for (let i = 0; i < 7; i++) {
 //     var tTest = jsQUEST.QuestMode(q).mode;
 //     if (10**tTest > 0.5) {
@@ -52,6 +51,18 @@ const trials_F100C = [52, 55, 56, 60, 62, 64, 65, 67, 70, 75, 80, 90];
 
 const trials = [trials_T280R, trials_T200R, trials_T140R, trials_T100R, trials_T280C, trials_T200C, trials_T140C, trials_T100C, trials_F280R, trials_F200R, trials_F140R, trials_F100R, trials_F280C, trials_F200C, trials_F140C, trials_F100C];
 const conditions = ["T280R", "T200R", "T140R", "T100R", "T280C", "T200C", "T140C", "T100C", "F280R", "F200R", "F140R", "F100R", "F280C", "F200C", "F140C", "F100C"]
+
+// for (let i=0; i<conditions.length; i++){
+//     let con = conditions[i]
+//     let trialZ = trials[i]
+
+//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50a" +  '.jpg">')
+//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50b" +  '.jpg">')
+//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50c" +  '.jpg">')
+//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50" +  '.jpg">')
+
+// }
+
 
 if(trials.length != conditions.length) { throw new Error('Missing trials!'); }
 
