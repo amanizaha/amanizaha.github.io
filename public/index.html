@@ -27,7 +27,7 @@
         <button id="continueButton" class="centerButton" disabled onclick="continueButtonPressed()">Continue</button>
     </div>
 
-    <div id="instructionPage" style="" class="page">
+    <div id="instructionPage" class="page">
         <h1>Instructions</h1>
         <p>
             In each trial of this experiment, you will be shown three images: one reference image, and two images for you to choose between. There will be 84 trials in total.
@@ -51,7 +51,7 @@
 
     <div id="referencePage" class="page">
         <h1 style="color: red;">Example</h1>
-        <p style="">
+        <p>
             This is an example to help you understand the task. Please choose the image that you think contains the <span style="font-weight: bold;">SAME RATIO OF TREES</span> as the reference image. The placement of individual trees does not matter.
         </p>
         <div id="imagesContainer">
@@ -64,7 +64,7 @@
                 </tr>
             </table>
             </div>
-        <div id="imagesContainer" style="">
+        <div id="imagesContainer">
             <div id="stimuliContainer">
             <div id="leftImageContainer">
                 <table>
@@ -117,7 +117,7 @@
               </tr>
           </table>
         </div>
-      <div id="imagesContainer" style="">
+      <div id="imagesContainer">
         <div id="stimuliContainer">
           <div id="leftImageContainer">
             <table>
@@ -196,7 +196,7 @@
             </tr>
             <tr>
                 <td>
-                    <label for="education">What is the highest level of education you have completed?</label>
+                    <label for="education">What is your highest level of education?</label>
                     <select name="education">
                         <option>Less than high school degree</option>
                         <option>High school degree or equivalent (e.g., GED)</option>
@@ -205,6 +205,20 @@
                         <option>Master degree</option>
                         <option>Professional degree</option>
                         <option>Doctoral degree</option>
+                    </select>
+                    <span class="red">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="program">What do you study?</label>
+                    <select name="program">
+                        <option>Computer science</option>
+                        <option>Information technology</option>
+                        <option>Media technology</option>
+                        <option>Graphic design</option>
+                        <option>Other</option>
+                        <option>I am currently not studying</option>
                     </select>
                     <span class="red">*</span>
                 </td>

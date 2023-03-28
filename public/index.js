@@ -72,7 +72,7 @@ let rand = Math.floor(Math.random() * trials.length)
 condition = trials[rand];
 conditionStr = conditions[rand];
 
-const trialsPerBlock = 7;
+const trialsPerBlock = 1;
 var k = trialsPerBlock;
 const numTrials = trials.length * k;
 let currentTrialIndex = -1;
@@ -325,6 +325,7 @@ function verifyAndGatherData() {
             age: potentialAge,
             device: $("select[name=device]").find(":selected").text(),
             education: $("select[name=education]").find(":selected").text(),
+            education: $("select[name=program]").find(":selected").text(),
             experience: $("select[name=experience]").find(":selected").text(),
             vision: $("select[name=vision]").find(":selected").text(),
             comments: $("textarea[name=comments]").val(),
