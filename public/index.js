@@ -155,6 +155,27 @@ function shuffleTrial(currentStimuli, same, order){
     }
 }
 
+
+function testSubmit(button) {
+    let ans = ""
+    $("#testHeading").hide()
+    
+    if (button === "Left") {
+        ans = 0
+        $("#testCorrect").hide()
+        $("#testIncorrect").show()
+        $("#testIncorrect").text(`Incorrect. The image on the left has a different ratio of trees than the reference.`)
+    }
+    else {
+        ans = 1
+        $("#testIncorrect").hide()
+        $("#testCorrect").show()
+        $("#testCorrect").text(`Correct! The image on the right has the same ratio of trees as the reference.`)
+    }
+
+    $("#testButton").prop("disabled", true)
+}
+
 function realismSubmit(button) {
     setButtonEnableTimer("realismButton", trialDelay);
     clearInterval(timer); // button is clicked -> stop timer
@@ -261,7 +282,6 @@ function nextTrial() {
 
         $("#refImage").attr("src", `img/${conditionStr + "50"}.jpg`);
         $("#trialNumber").text(`Trial ${currentTrialIndex + 1}/${numTrials}`)
-        console.log(correctAnswers)
         $("#trialsCorrect").text(`Correct ${correctAnswers}`)
 
         randord = Math.random()

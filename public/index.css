@@ -59,12 +59,8 @@ h1 {
 
 #referencePage {
     display: none;
-    width: 60%;
-}
-
-#referencePage p {
-    width: 80%;
-    margin: auto;
+    text-align: center;
+    width: 75%;
 }
 
 #referencePage a {
@@ -72,11 +68,19 @@ h1 {
 }
 
 #referencePage table {
-    width: 100%;
+    margin: auto;
 }
 
 #referencePage img {
-    height: 20em;
+    width: 27vw;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#referencePage td {
+    padding-left: 0em;
+    padding-right: 0em;
 }
 
 #trialPage {

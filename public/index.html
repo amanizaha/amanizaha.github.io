@@ -30,19 +30,19 @@
     <div id="instructionPage" style="" class="page">
         <h1>Instructions</h1>
         <p>
-            In each trial of this experiment, you will be shown three images: one <strong>reference image</strong>, and two images for you to choose between. There will be 84 trials in total.
+            In each trial of this experiment, you will be shown three images: one reference image, and two images for you to choose between. There will be 84 trials in total.
         </p>
         <br>
         <p>
-            <span style="color: red;">YOUR TASK</span> is to choose which one of the two images you think contains the same collection of trees as the reference. On the next page, you will be shown an example.
+            <span style="color: red;">YOUR TASK</span> is to choose which one of the two images you think contains the same collection of trees as the reference image. On the next page, you will be shown an example.
         </p>
         <br>
         <p>
-            <span style="color: red;">TIME LIMIT:</span> There is no time limit for the experiment, but for each trial, the images will be shuffled/updated if you haven't chosen within 20 seconds.
+            <span style="color: red;">TIME LIMIT:</span> There is no time limit for the experiment, but for each trial, the images will be shuffled/updated if you haven't made a choice within 20 seconds.
         </p>
         <br>
         <p>
-            If the page contents look like they don't fit the window at any point, please zoom the page out by pressing CTRL and - together. (If you are using a Mac, press Command instead of CTRL.)
+            Screen size: If the page contents look like they don't fit the browser window at any point, please zoom the page out by pressing CTRL and - together. (If you are using a Mac, press Command instead of CTRL.)
         </p>
         <br>
         <button id="refStartButton" class="centerButton" onclick="startButtonPressed()">Continue</button>
@@ -51,19 +51,56 @@
 
     <div id="referencePage" class="page">
         <h1 style="color: red;">Example</h1>
-        <p>
-            Below is an example of the task. The first image (top) is the <strong>reference</strong>. In each task, you will need to compare the two choice images (bottom) to the reference image. You will choose by clicking either the 'left' or 'right' button.
+        <p style="">
+            This is an example to help you understand the task. Please choose the image that you think contains the <span style="font-weight: bold;">SAME RATIO OF TREES</span> as the reference image. The placement of individual trees does not matter.
         </p>
-        <br>
-        <div style="display: flex; flex-direction: column; margin-top: 1em;">
-            <img style="height: 13em; object-fit: contain; margin-bottom: 1em;" src="img/T50R50.jpg">
-            <div style="display: flex; justify-content: center;">
-                <img style="height: 13em; margin-right: 0.5em;" src="img/T50R50a.jpg">
-                <img style="height: 13em; margin-left: 0.5em;" src="img/T50R70.jpg">
+        <div id="imagesContainer">
+            <div id="refImageContainer">
+            <table>
+                <tr>
+                    <td>
+                        <img src="img/T50R50.jpg">
+                    </td>
+                </tr>
+            </table>
+            </div>
+        <div id="imagesContainer" style="">
+            <div id="stimuliContainer">
+            <div id="leftImageContainer">
+                <table>
+                    <tr>
+                        <td>
+                            <img id="" src="img/T50R80.jpg">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="testButton" onclick="testSubmit(this.innerHTML)">Left</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="rightImageContainer">
+                <table>
+                    <tr>
+                        <td>
+                            <img id="" src="img/T50R50a.jpg">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="testButton" onclick="testSubmit(this.innerHTML)">Right</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
             </div>
         </div>
-        <br>
-        <button id="trialStartButton" class="centerButton" disabled onclick="trialStartButtonPressed()">START TASK</button>
+        <h1 id="testHeading">Which image shows the same collection of trees as the reference?</h1>
+        </div>
+        <br/>
+    <h3 id="testCorrect" style="color:green;"></h3>
+    <h3 id="testIncorrect" style="color:red;"></h3>
     </div>
 
     <div id="trialPage" class="page">
