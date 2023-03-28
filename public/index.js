@@ -121,7 +121,8 @@ function continueButtonPressed() {
 function startButtonPressed() {
     $("#instructionPage").hide();
     $("#referencePage").show();
-    setTimeout(() => $("#trialStartButton").prop("disabled", false), pageDelay);
+    $("#trialStartButton").hide()
+    //setTimeout(() => $("#trialStartButton").prop("disabled", false), pageDelay);
 }
 
 function trialStartButtonPressed() {
@@ -164,15 +165,16 @@ function testSubmit(button) {
         ans = 0
         $("#testCorrect").hide()
         $("#testIncorrect").show()
-        $("#testIncorrect").text(`Incorrect. The image on the left has a different ratio of trees than the reference.`)
+        $("#testIncorrect").text(`Incorrect. The reference has 50% of each tree, while the left image has 80% and 20% of each.`)
     }
     else {
         ans = 1
         $("#testIncorrect").hide()
         $("#testCorrect").show()
-        $("#testCorrect").text(`Correct! The image on the right has the same ratio of trees as the reference.`)
+        $("#testCorrect").text(`Correct! The reference has 50% of each tree, and the image on the right has the same ratio.`)
     }
 
+    $("#trialStartButton").show()
     $("#testButton").prop("disabled", true)
 }
 
