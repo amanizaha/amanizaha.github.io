@@ -72,7 +72,7 @@ let rand = Math.floor(Math.random() * trials.length)
 condition = trials[rand];
 conditionStr = conditions[rand];
 
-const trialsPerBlock = 1;
+const trialsPerBlock = 7;
 var k = trialsPerBlock;
 const numTrials = trials.length * k;
 let currentTrialIndex = -1;
