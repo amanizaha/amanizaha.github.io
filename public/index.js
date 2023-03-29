@@ -1,13 +1,4 @@
-// for (let i=0; i<conditions.length; i++){
-//     let con = conditions[i]
-//     let trialZ = trials[i]
 
-//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50a" +  '.jpg">')
-//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50b" +  '.jpg">')
-//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50c" +  '.jpg">')
-//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50" +  '.jpg">')
-
-// }
 const firebaseConfig = {
     apiKey: "AIzaSyC9wQY6bCkr1mUgWxATGNnwSwOSs9JXkb4",
     authDomain: "thesis-11cc1.firebaseapp.com",
@@ -118,6 +109,16 @@ var prev = ""
 var randord = 0;
 var it = 0;
 
+// for (let i=0; i<conditions.length; i++){
+//     let con = conditions[i]
+//     let trialZ = trials[i]
+
+//     for (let j=0; j<trialZ.length; j++){
+//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + trialZ[j] +  '.jpg">')
+//     }
+//         // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50a" +  '.jpg">')
+
+// }
 
 // FOR CALCULATING THRESHOLD FROM MULTIPLE PARTICIPANTS' RESPONSE
 // var thing = ""
