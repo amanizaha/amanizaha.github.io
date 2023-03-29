@@ -62,6 +62,9 @@ const trials_F100C = [52, 55, 56, 60, 62, 64, 65, 67, 70, 75, 80, 90];
 const trials = [trials_T280R, trials_T200R, trials_T140R, trials_T100R, trials_T280C, trials_T200C, trials_T140C, trials_T100C, trials_F280R, trials_F200R, trials_F140R, trials_F100R, trials_F280C, trials_F200C, trials_F140C, trials_F100C];
 const conditions = ["T280R", "T200R", "T140R", "T100R", "T280C", "T200C", "T140C", "T100C", "F280R", "F200R", "F140R", "F100R", "F280C", "F200C", "F140C", "F100C"]
 
+// const trials = [trials_T140R]
+// const conditions = ["T140R"]
+
 if(trials.length != conditions.length) { throw new Error('Missing trials!'); }
 
 //const trialOrder = [...trials.keys()];
@@ -82,7 +85,7 @@ var allResults = {}
 var correctAnswers = 0;
 
 // tGuess = 20% change threshold, i.e. from 50:50 -> 70:30.
-const tGuess = Math.log10(0.3); // Estimate of intensity expected to result in a response rate of pThreshold.
+const tGuess = Math.log10(0.2); // Estimate of intensity expected to result in a response rate of pThreshold.
 const tGuessSd = 1 // 
 const pThreshold = 0.75
 const beta = 3.5; // steepness of curve
@@ -92,13 +95,59 @@ let tActual = 1;
 
 var timer = '';
 let wrongRight = ['wrong', 'right'];
-var q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 3);
+var q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.001, 1);
 var tTest = jsQUEST.QuestMode(q).mode;
 var currentIntensity = tTest
 var prev = ""
 var randord = 0;
 var it = 0;
 
+
+// FOR CALCULATING THRESHOLD FROM MULTIPLE PARTICIPANTS' RESPONSE
+// var thing = ""
+
+// fetch('json/p1.json')
+//     .then((response) => response.json())
+//     .then((json) => hey(json))
+//     .then(() => calc());
+
+// function hey(obj){
+//     thing = obj
+// }
+
+// function compare( a, b ) {
+//     if ( a.threshold < b.threshold ){
+//       return -1;
+//     }
+//     if ( a.threshold > b.threshold ){
+//       return 1;
+//     }
+//     return 0;
+//   }
+
+// function calc() {
+//     let nums = []
+//     let ok = ""
+//     for (let i=0; i<conditions.length; i++){ // e.g. T100R
+//         var x = jsQUEST.QuestCreate(Math.log10(0.2), tGuessSd, pThreshold, beta, delta, gamma, 0.01, 3);
+//         let con = conditions[i]
+//         let allsubj = []
+//         for (const [key, value] of Object.entries(thing)) {  //gather all responses
+//             let subj = value.trialResults[con];
+//             ok = subj
+//             allsubj.push(subj)
+//             for (let j = 0; j < 7; j++) {   // iter through all responses
+//                 let response = subj[j].answer == "right" ? 1 : 0;
+//                 let test = Math.log10( parseFloat(subj[j].intensity) ) 
+//                 x = jsQUEST.QuestUpdate(x, test, response); 
+//             }
+//         }
+//         nums.push({con: con, threshold:10**jsQUEST.QuestMode(x).mode, sd: jsQUEST.QuestSd(x), trials: ok})
+//     }
+    
+//     nums.sort( compare );
+//     console.log(nums)
+// }
 
 setTimeout(() => $("#continueButton").prop("disabled", false), pageDelay);
 $("#welcomeHeading").show();
@@ -352,62 +401,3 @@ function shuffleArray(array) {
 
 
 
-
-// FOR CALCULATING THRESHOLD FROM MULTIPLE PARTICIPANTS' RESPONSE
-// var thing = ""
-
-// fetch('json/p1.json')
-//     .then((response) => response.json())
-//     .then((json) => hey(json))
-//     .then(() => calc());
-
-// function hey(obj){
-//     thing = obj
-// }
-
-// function compare( a, b ) {
-//     if ( a.threshold < b.threshold ){
-//       return -1;
-//     }
-//     if ( a.threshold > b.threshold ){
-//       return 1;
-//     }
-//     return 0;
-//   }
-
-// function calc() {
-//     let nums = []
-//     for (let i=0; i<conditions.length; i++){ // e.g. T100R
-//         var x = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 3);
-//         let con = conditions[i]
-//         let allsubj = []
-//         for (const [key, value] of Object.entries(thing)) {  //gather all responses
-//             let subj = value.trialResults[con];
-//             allsubj.push(subj)
-//             for (let j = 0; j < 7; j++) {   // iter through all responses
-//                 let response = subj[j].answer == "right" ? 1 : 0;
-//                 let test = Math.log10( parseFloat(subj[j].intensity) ) 
-//                 x = jsQUEST.QuestUpdate(x, test, response); 
-//             }
-//         }
-
-//         nums.push({con: con, threshold:10**jsQUEST.QuestMode(x).mode})
-//     }
-    
-//     nums.sort( compare );
-//     console.log(nums)
-//     // for (let j = 0; j < 6; j++) {
-//     //     let curr = things[j]
-//     //     for (let i = 0; i < 7; i++) {
-//     //         console.log(curr[i])
-
-//     //         let response = curr[i].answer=="right" ? 1 : 0;
-//     //         console.log(response)
-//     //         let test = Math.log10( parseFloat(curr[i].intensity) )
-//     //         x = jsQUEST.QuestUpdate(x, test, response); 
-//     //     }
-//     // }
-
-//     // console.log("answer is", 10**jsQUEST.QuestMode(x).mode)
-//     // console.log("sd:", jsQUEST.QuestSd(x))
-// }
