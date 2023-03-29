@@ -47,20 +47,35 @@ const trials_T200C = [55, 60, 65, 67, 70, 72, 75, 80,85];
 const trials_T140C = [52, 55, 60, 62, 65, 67, 70, 72, 75, 80, 90];
 const trials_T100C = [52, 55, 56, 57, 60, 62, 64, 65, 67, 70, 80, 85];
 
-const trials_F280R = [60, 65, 70, 75, 80, 85, 90];
-const trials_F200R = [55, 60, 65, 67, 70, 72, 75, 78, 80, 90];
-const trials_F140R = [55, 60, 65, 67, 70, 72, 75, 80, 85, 90];
-const trials_F100R = [55, 56, 60, 62, 65, 67, 70, 75, 80, 85, 90];
+// const trials_F280R = [60, 65, 70, 75, 80, 85, 90];
+// const trials_F200R = [55, 60, 65, 67, 70, 72, 75, 78, 80, 90];
+// const trials_F140R = [55, 60, 65, 67, 70, 72, 75, 80, 85, 90];
+// const trials_F100R = [55, 56, 60, 62, 65, 67, 70, 75, 80, 85, 90];
 
-const trials_F280C = [55, 60, 65, 70, 75, 80, 85, 90];
-const trials_F200C = [55, 60, 62, 65, 70, 72, 75, 80, 90];
-const trials_F140C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 80, 90];
-const trials_F100C = [52, 55, 56, 60, 62, 64, 65, 67, 70, 75, 80, 90];
+// const trials_F280C = [55, 60, 65, 70, 75, 80, 85, 90];
+// const trials_F200C = [55, 60, 62, 65, 70, 72, 75, 80, 90];
+// const trials_F140C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 80, 90];
+// const trials_F100C = [52, 55, 56, 60, 62, 64, 65, 67, 70, 75, 80, 90];
+
+const trials_Tc280R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+const trials_Tc200R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+const trials_Tc140R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+const trials_Tc100R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+
+const trials_Tc280C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+const trials_Tc200C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+const trials_Tc140C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+const trials_Tc100C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+
 
 // git push --mirror git@github.com:amanizaha/amanizaha.github.io.git
 
-const trials = [trials_T280R, trials_T200R, trials_T140R, trials_T100R, trials_T280C, trials_T200C, trials_T140C, trials_T100C, trials_F280R, trials_F200R, trials_F140R, trials_F100R, trials_F280C, trials_F200C, trials_F140C, trials_F100C];
-const conditions = ["T280R", "T200R", "T140R", "T100R", "T280C", "T200C", "T140C", "T100C", "F280R", "F200R", "F140R", "F100R", "F280C", "F200C", "F140C", "F100C"]
+// const trials = [trials_T280R, trials_T200R, trials_T140R, trials_T100R, trials_T280C, trials_T200C, trials_T140C, trials_T100C, trials_F280R, trials_F200R, trials_F140R, trials_F100R, trials_F280C, trials_F200C, trials_F140C, trials_F100C];
+// const conditions = ["T280R", "T200R", "T140R", "T100R", "T280C", "T200C", "T140C", "T100C", "F280R", "F200R", "F140R", "F100R", "F280C", "F200C", "F140C", "F100C"]
+
+const trials = [trials_T280R, trials_T200R, trials_T140R, trials_T100R, trials_T280C, trials_T200C, trials_T140C, trials_T100C, trials_Tc280R, trials_Tc200R, trials_Tc140R, trials_Tc100R, trials_Tc280C, trials_Tc200C, trials_Tc140C, trials_Tc100C];
+const conditions = ["T280R", "T200R", "T140R", "T100R", "T280C", "T200C", "T140C", "T100C", "Tc280R", "Tc200R", "Tc140R", "Tc100R", "Tc280C", "Tc200C", "Tc140C", "Tc100C"]
+
 
 // const trials = [trials_T140R]
 // const conditions = ["T140R"]
@@ -72,6 +87,7 @@ if(trials.length != conditions.length) { throw new Error('Missing trials!'); }
 let rand = Math.floor(Math.random() * trials.length)
 condition = trials[rand];
 conditionStr = conditions[rand];
+console.log(conditionStr)
 
 const trialsPerBlock = 7;
 var k = trialsPerBlock;
@@ -95,7 +111,7 @@ let tActual = 1;
 
 var timer = '';
 let wrongRight = ['wrong', 'right'];
-var q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.001, 1);
+var q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.001, 2);
 var tTest = jsQUEST.QuestMode(q).mode;
 var currentIntensity = tTest
 var prev = ""
@@ -248,7 +264,8 @@ function realismSubmit(button) {
 
         let rand = Math.floor(Math.random() * trials.length)
         condition = trials[rand];                   // picks next block of trials to run
-        conditionStr = conditions[rand];    
+        conditionStr = conditions[rand];
+        console.log(conditionStr)    
 
         // Need to reset all values for the next 7 Quest trials
         q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 3);
