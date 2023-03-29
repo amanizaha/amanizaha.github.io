@@ -113,10 +113,12 @@ var it = 0;
 //     let con = conditions[i]
 //     let trialZ = trials[i]
 
-//     for (let j=0; j<trialZ.length; j++){
-//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + trialZ[j] +  '.jpg">')
-//     }
-//         // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50a" +  '.jpg">')
+//     // for (let j=0; j<trialZ.length; j++){
+//     //     console.log('<img style="display: none;" class="preloadImage" src="img/' + con + trialZ[j] +  '.jpg">')
+//     // }
+//     console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50a" +  '.jpg">')
+//     console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50b" +  '.jpg">')
+//     console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50c" +  '.jpg">')
 
 // }
 
