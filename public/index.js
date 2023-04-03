@@ -110,18 +110,19 @@ var prev = ""
 var randord = 0;
 var it = 0;
 
-// for (let i=0; i<conditions.length; i++){
-//     let con = conditions[i]
-//     let trialZ = trials[i]
+for (let i=0; i<conditions.length; i++){
+    let con = conditions[i]
+    let trialZ = trials[i]
 
-//     // for (let j=0; j<trialZ.length; j++){
-//     //     console.log('<img style="display: none;" class="preloadImage" src="img/' + con + trialZ[j] +  '.jpg">')
-//     // }
-//     console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50a" +  '.jpg">')
-//     console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50b" +  '.jpg">')
-//     console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50c" +  '.jpg">')
+    for (let j=0; j<trialZ.length; j++){
+        console.log('<img style="display: none;" class="preloadImage" src="img/' + con + trialZ[j] +  '.jpg">')
+    }
+    // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50" +  '.jpg">')
+    // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50a" +  '.jpg">')
+    // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50b" +  '.jpg">')
+    // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50c" +  '.jpg">')
 
-// }
+}
 
 // FOR CALCULATING THRESHOLD FROM MULTIPLE PARTICIPANTS' RESPONSE
 // var thing = ""
