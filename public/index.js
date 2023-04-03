@@ -28,44 +28,45 @@ const chart_height = 400
 // console.log(10**jsQUEST.QuestMode(q).mode)
 
 // Available intensities (exc. base intensity).
-const trials_T280R = [55, 60, 65, 70, 75, 80, 85, 90];
-const trials_T200R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 78, 80, 90];
-const trials_T140R = [52, 55, 56, 60, 62, 65, 67, 70, 72, 75, 80, 85, 90];
-const trials_T100R = [52, 55, 56, 57, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_T300R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_T200R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_T140R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_T100R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
 
-const trials_T280C = [55, 60, 65, 70, 75, 80, 85, 90];
-const trials_T200C = [55, 60, 65, 67, 70, 72, 75, 80,85];
-const trials_T140C = [52, 55, 60, 62, 65, 67, 70, 72, 75, 80, 90];
-const trials_T100C = [52, 55, 56, 57, 60, 62, 64, 65, 67, 70, 80, 85];
+const trials_T300C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_T200C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_T140C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_T100C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
 
-// const trials_F280R = [60, 65, 70, 75, 80, 85, 90];
-// const trials_F200R = [55, 60, 65, 67, 70, 72, 75, 78, 80, 90];
-// const trials_F140R = [55, 60, 65, 67, 70, 72, 75, 80, 85, 90];
-// const trials_F100R = [55, 56, 60, 62, 65, 67, 70, 75, 80, 85, 90];
+const trials_F300R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_F200R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_F140R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_F100R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
 
-// const trials_F280C = [55, 60, 65, 70, 75, 80, 85, 90];
-// const trials_F200C = [55, 60, 62, 65, 70, 72, 75, 80, 90];
-// const trials_F140C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 80, 90];
-// const trials_F100C = [52, 55, 56, 60, 62, 64, 65, 67, 70, 75, 80, 90];
+const trials_F300C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_F200C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_F140C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_F100C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
 
-const trials_Tc280R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
-const trials_Tc200R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
-const trials_Tc140R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
-const trials_Tc100R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+// const trials_Tc280R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+// const trials_Tc200R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+// const trials_Tc140R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+// const trials_Tc100R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
 
-const trials_Tc280C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
-const trials_Tc200C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
-const trials_Tc140C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
-const trials_Tc100C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+// //55 seems to be missing
+// const trials_Tc280C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+// const trials_Tc200C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+// const trials_Tc140C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
+// const trials_Tc100C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
 
 
 // git push --mirror git@github.com:amanizaha/amanizaha.github.io.git
 
-// const trials = [trials_T280R, trials_T200R, trials_T140R, trials_T100R, trials_T280C, trials_T200C, trials_T140C, trials_T100C, trials_F280R, trials_F200R, trials_F140R, trials_F100R, trials_F280C, trials_F200C, trials_F140C, trials_F100C];
-// const conditions = ["T280R", "T200R", "T140R", "T100R", "T280C", "T200C", "T140C", "T100C", "F280R", "F200R", "F140R", "F100R", "F280C", "F200C", "F140C", "F100C"]
+const trials = [trials_T300R, trials_T200R, trials_T140R, trials_T100R, trials_T300C, trials_T200C, trials_T140C, trials_T100C, trials_F300R, trials_F200R, trials_F140R, trials_F100R, trials_F300C, trials_F200C, trials_F140C, trials_F100C];
+const conditions = ["T300R", "T200R", "T140R", "T100R", "T300C", "T200C", "T140C", "T100C", "F300R", "F200R", "F140R", "F100R", "F300C", "F200C", "F140C", "F100C"]
 
-const trials = [trials_T280R, trials_T200R, trials_T140R, trials_T100R, trials_T280C, trials_T200C, trials_T140C, trials_T100C, trials_Tc280R, trials_Tc200R, trials_Tc140R, trials_Tc100R, trials_Tc280C, trials_Tc200C, trials_Tc140C, trials_Tc100C];
-const conditions = ["T280R", "T200R", "T140R", "T100R", "T280C", "T200C", "T140C", "T100C", "Tc280R", "Tc200R", "Tc140R", "Tc100R", "Tc280C", "Tc200C", "Tc140C", "Tc100C"]
+// const trials = [trials_T280R, trials_T200R, trials_T140R, trials_T100R, trials_T280C, trials_T200C, trials_T140C, trials_T100C];
+// const conditions = ["T280R", "T200R", "T140R", "T100R", "T280C", "T200C", "T140C", "T100C"]
 
 
 // const trials = [trials_T140R]
@@ -147,6 +148,11 @@ var it = 0;
 // function calc() {
 //     let nums = []
 //     let ok = ""
+//     for (const [key, value] of Object.entries(thing)) {
+//         console.log(value.trialResults["T100C"])
+//     }
+
+
 //     for (let i=0; i<conditions.length; i++){ // e.g. T100R
 //         var x = jsQUEST.QuestCreate(Math.log10(0.2), tGuessSd, pThreshold, beta, delta, gamma, 0.01, 3);
 //         let con = conditions[i]
@@ -155,10 +161,13 @@ var it = 0;
 //             let subj = value.trialResults[con];
 //             ok = subj
 //             allsubj.push(subj)
-//             for (let j = 0; j < 7; j++) {   // iter through all responses
-//                 let response = subj[j].answer == "right" ? 1 : 0;
-//                 let test = Math.log10( parseFloat(subj[j].intensity) ) 
-//                 x = jsQUEST.QuestUpdate(x, test, response); 
+  
+//             if(subj){
+//                 for (let j = 0; j < 7; j++) {   // iter through all responses
+//                     let response = subj[j].answer == "right" ? 1 : 0;
+//                     let test = Math.log10( parseFloat(subj[j].intensity) ) 
+//                     x = jsQUEST.QuestUpdate(x, test, response); 
+//                 }
 //             }
 //         }
 //         nums.push({con: con, threshold:10**jsQUEST.QuestMode(x).mode, sd: jsQUEST.QuestSd(x), trials: ok})
@@ -232,13 +241,15 @@ function testSubmit(button) {
         ans = 0
         $("#testCorrect").hide()
         $("#testIncorrect").show()
-        $("#testIncorrect").text(`Incorrect. The left image has an 80:20 ratio of each tree, while the reference image has 50:50 of each.`)
+        $("#leftImageContainer").css({"background-color": "red"})
+        $("#testIncorrect").text(`Incorrect. The left image has a different ratio of each tree, compared to the reference image.`)
     }
     else {
         ans = 1
         $("#testIncorrect").hide()
         $("#testCorrect").show()
-        $("#testCorrect").text(`Correct! The right image has a 50:50 ratio of each tree, which is the same ratio as the reference image.`)
+        $("#rightImageContainer").css({"background-color": "green"})
+        $("#testCorrect").text(`Correct! The right image has the same ratio of each tree, as the reference image.`)
     }
 
     $("#trialStartButton").show()
