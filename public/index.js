@@ -59,18 +59,13 @@ const trials_F100C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
 // const trials_Tc140C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
 // const trials_Tc100C = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
 
-
 // git push --mirror git@github.com:amanizaha/amanizaha.github.io.git
 
 const trials = [trials_T300R, trials_T200R, trials_T140R, trials_T100R, trials_T300C, trials_T200C, trials_T140C, trials_T100C, trials_F300R, trials_F200R, trials_F140R, trials_F100R, trials_F300C, trials_F200C, trials_F140C, trials_F100C];
 const conditions = ["T300R", "T200R", "T140R", "T100R", "T300C", "T200C", "T140C", "T100C", "F300R", "F200R", "F140R", "F100R", "F300C", "F200C", "F140C", "F100C"]
 
-// const trials = [trials_T280R, trials_T200R, trials_T140R, trials_T100R, trials_T280C, trials_T200C, trials_T140C, trials_T100C];
-// const conditions = ["T280R", "T200R", "T140R", "T100R", "T280C", "T200C", "T140C", "T100C"]
-
-
-// const trials = [trials_T140R]
-// const conditions = ["T140R"]
+// const trials = [trials_T300R, trials_T200R, trials_T140R, trials_T100R];
+// const conditions = ["T300R", "T200R", "T140R", "T100R"]
 
 if(trials.length != conditions.length) { throw new Error('Missing trials!'); }
 
@@ -110,19 +105,19 @@ var prev = ""
 var randord = 0;
 var it = 0;
 
-for (let i=0; i<conditions.length; i++){
-    let con = conditions[i]
-    let trialZ = trials[i]
+// for (let i=0; i<conditions.length; i++){
+//     let con = conditions[i]
+//     let trialZ = trials[i]
 
-    for (let j=0; j<trialZ.length; j++){
-        console.log('<img style="display: none;" class="preloadImage" src="img/' + con + trialZ[j] +  '.jpg">')
-    }
-    // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50" +  '.jpg">')
-    // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50a" +  '.jpg">')
-    // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50b" +  '.jpg">')
-    // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50c" +  '.jpg">')
+//     for (let j=0; j<trialZ.length; j++){
+//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + trialZ[j] +  '.jpg">')
+//     }
+//     // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50" +  '.jpg">')
+//     // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50a" +  '.jpg">')
+//     // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50b" +  '.jpg">')
+//     // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50c" +  '.jpg">')
 
-}
+// }
 
 // FOR CALCULATING THRESHOLD FROM MULTIPLE PARTICIPANTS' RESPONSE
 // var thing = ""
@@ -250,7 +245,7 @@ function testSubmit(button) {
         $("#testIncorrect").hide()
         $("#testCorrect").show()
         $("#rightImageContainer").css({"background-color": "green"})
-        $("#testCorrect").text(`Correct! The right image has the same ratio of each tree, as the reference image.`)
+        $("#testCorrect").text(`Correct! The right image has the same ratio of each tree as the reference image.`)
     }
 
     $("#trialStartButton").show()
@@ -263,11 +258,13 @@ function realismSubmit(button) {
 
     results.push(getTrialResult(button));
     tTest = jsQUEST.QuestMode(q).mode; // what's the next suggested intensity?
-    console.log("SUGGESTED:", 10**tTest)
+    // console.log("SUGGESTED:", 10**tTest)
 
     if (k == 0) { // current CONDITION done
         results.push({'mode': 10**jsQUEST.QuestMode(q).mode}) // FOR PILOT TEST
-        console.log("FINAL MODE:",10**jsQUEST.QuestMode(q).mode)
+        let time = 0.001 * (new Date() - startTime)
+        results.push({'block_duration': time})
+        // console.log("FINAL MODE:",10**jsQUEST.QuestMode(q).mode)
         allResults[conditionStr] = results; // add all results for 'completed' condition
         results = []
         k = trialsPerBlock;
@@ -280,7 +277,7 @@ function realismSubmit(button) {
         let rand = Math.floor(Math.random() * trials.length)
         condition = trials[rand];                   // picks next block of trials to run
         conditionStr = conditions[rand];
-        console.log(conditionStr)    
+        // console.log(conditionStr)    
 
         // Need to reset all values for the next 7 Quest trials
         q = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma, 0.01, 3);
@@ -397,6 +394,7 @@ function verifyAndGatherData() {
         let data = {
             gender: $("select[name=gender]").find(":selected").text(),
             age: potentialAge,
+            location: $("select[name=location]").find(":selected").text(),
             device: $("select[name=device]").find(":selected").text(),
             education: $("select[name=education]").find(":selected").text(),
             education: $("select[name=program]").find(":selected").text(),

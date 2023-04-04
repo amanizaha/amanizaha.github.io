@@ -1,3 +1,5 @@
-# User study interface
+# User study interface for perceptual experiment
 
-Modified version of user study interface created by [Anders Sten](https://github.com/steenish/user-study-interface).
+Please click [here](https://amanizaha.github.io/public/) to partake in the experiment.
+
+For any questions, please contact amanimn@kth.se.

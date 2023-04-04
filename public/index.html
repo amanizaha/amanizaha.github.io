@@ -16,14 +16,17 @@
     <div id="consentPage" class="page">
         <h2>Consent</h2>
         <p>
-            In this task, you will be presented with computer-generated images of groups of trees. We are interested in seeing how you perceive these images. The task will take 10-20 minutes.
+            In this task, you will be presented with computer-generated images of groups of trees. For my study, I am interested in seeing how you perceive these images. The task will take 10-20 minutes.
+        </p>
+        <br>
+        <p>
+            On the next page you will see detailed instructions for the experiment.
         </p>
         <br>
         <p>
             By clicking "Continue" below, you agree to take part in this study. Data from this study will be be kept confidential and only shown in aggregate form. This study is conducted in accordance with the ethical guidelines of KTH Royal Institute of Technology.
         </p>
         <br>
-            
         <button id="continueButton" class="centerButton" disabled onclick="continueButtonPressed()">Continue</button>
     </div>
 
@@ -34,15 +37,15 @@
         </p>
         <br>
         <p>
-            <span style="color: red;">YOUR TASK</span> is to choose which one of the two images you think contains the same collection of trees as the reference image. On the next page, you will be shown an example.
+            <span style="color: red;">Your task</span> is to choose which one of the two images you think contains the same ratio of trees as the reference image. On the next page, you will be shown an example.
         </p>
         <br>
         <p>
-            <span style="color: red;">TIME LIMIT:</span> There is no time limit for the experiment, but for each trial, the images will be shuffled/updated if you haven't made a choice within 20 seconds.
+            <span style="color: red;">Time limit:</span> There is no time limit for the experiment, but for each trial, the images will be shuffled/updated if you haven't made a choice within 20 seconds.
         </p>
         <br>
         <p>
-            Screen size: If the page contents look like they don't fit the browser window at any point, please zoom the page out by pressing CTRL and - together. (If you are using a Mac, press Command instead of CTRL.)
+            If possible, please use a large monitor to do the experiment. If the page contents look like they don't fit the browser window at any point, please zoom the page out. Do this by pressing CTRL and - together. (If you are using a Mac, press Command instead of CTRL.)
         </p>
         <br>
         <button id="refStartButton" class="centerButton" onclick="startButtonPressed()">Continue</button>
@@ -52,10 +55,11 @@
     <div id="referencePage" class="page">
         <h1 style="color: red;">Example</h1>
         <p>
-            (Example) All three images below contain the same total number of trees, arranged differently. Two kinds of trees are used in each image.
+            There are two kinds of trees used in each image.<br> Choose the image that you think contains the <span style="font-weight: bold;">same ratio of different trees</span> as the reference image.
         </p>
+
         <p>
-            Choose the image that you think contains the <span style="font-weight: bold;">same ratio of different trees</span> as the reference image.
+            <span style="text-decoration: underline;">Important:</span> all three images will always contain the same total number of trees.
         </p>
         <div id="imagesContainer">
             <div id="refImageContainer">
@@ -186,11 +190,22 @@
             </tr>
             <tr>
                 <td>
-                    <label for="device">What device are you using to view this experiment?</label>
+                    <label for="location">How are you participating in this experiment?</label>
+                    <select name="location">
+                        <option>In-person at KTH</option>
+                        <option>Online, via Zoom</option>
+                        <option>Online, independently</option>
+                    </select>
+                    <span class="red">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="device">What are you using to view this experiment?</label>
                     <select name="device">
-                        <option>Desktop computer</option>
-                        <option>Laptop (e.g. Macbook, HP, etc)</option>
-                        <option>Tablet (e.g. iPad, Galaxy Tab, etc)</option>
+                        <option>Desktop computer/large monitor</option>
+                        <option>Laptop</option>
+                        <option>Tablet</option>
                         <option>Smartphone</option>
                     </select>
                     <span class="red">*</span>
@@ -218,9 +233,9 @@
                         <option>Computer science</option>
                         <option>Information technology</option>
                         <option>Media technology</option>
-                        <option>Graphic design</option>
+                        <option>Design</option>
                         <option>Other</option>
-                        <option>I am currently not studying</option>
+                        <option>I am currently not enrolled at a university</option>
                     </select>
                     <span class="red">*</span>
                 </td>
