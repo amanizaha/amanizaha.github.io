@@ -16,6 +16,7 @@ var ref = db.ref("/");
 animate = 2
 const chart_width = 500
 const chart_height = 400
+
 // for (let i = 0; i < 7; i++) {
 //     var tTest = jsQUEST.QuestMode(q).mode;
 //     if (10**tTest > 0.5) {
@@ -28,25 +29,25 @@ const chart_height = 400
 // console.log(10**jsQUEST.QuestMode(q).mode)
 
 // Available intensities (exc. base intensity).
-const trials_T300R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_T200R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_T140R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_T100R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_T700R = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
+const trials_T500R = [52, 54, 55, 56, 57, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
+const trials_T300R = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
+const trials_T200R = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
 
-const trials_T300C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_T200C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_T140C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_T100C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_T700C = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
+const trials_T500C = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
+const trials_T300C = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
+const trials_T200C = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
 
-const trials_F300R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_F200R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_F140R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_F100R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+// const trials_F700R = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_F500R = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
+const trials_F300R = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
+const trials_F200R = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
 
-const trials_F300C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_F200C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_F140C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
-const trials_F100C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+// const trials_F700C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
+const trials_F500C = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
+const trials_F300C = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
+const trials_F200C = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
 
 // const trials_Tc280R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
 // const trials_Tc200R = [55, 56, 60, 62, 65, 67, 70, 72, 75, 77, 80, 82, 85, 87, 90];
@@ -61,11 +62,11 @@ const trials_F100C = [52, 55, 56, 60, 62, 64, 65, 70, 75, 80, 85, 90];
 
 // git push --mirror git@github.com:amanizaha/amanizaha.github.io.git
 
-const trials = [trials_T300R, trials_T200R, trials_T140R, trials_T100R, trials_T300C, trials_T200C, trials_T140C, trials_T100C, trials_F300R, trials_F200R, trials_F140R, trials_F100R, trials_F300C, trials_F200C, trials_F140C, trials_F100C];
-const conditions = ["T300R", "T200R", "T140R", "T100R", "T300C", "T200C", "T140C", "T100C", "F300R", "F200R", "F140R", "F100R", "F300C", "F200C", "F140C", "F100C"]
+const trials = [trials_T700R, trials_T500R, trials_T300R, trials_T200R, trials_T700C, trials_T500C, trials_T300C, trials_T200C, trials_F500R, trials_F300R, trials_F200R, trials_F500C, trials_F300C, trials_F200C];
+const conditions = ["T700R", "T500R", "T300R", "T200R", "T700C", "T500C", "T300C", "T200C", "F500R", "F300R", "F200R", "F500C", "F300C", "F200C"]
 
-// const trials = [trials_T300R, trials_T200R, trials_T140R, trials_T100R];
-// const conditions = ["T300R", "T200R", "T140R", "T100R"]
+// const trials = [trials_T300R];
+// const conditions = ["T300R"];
 
 if(trials.length != conditions.length) { throw new Error('Missing trials!'); }
 
@@ -74,7 +75,7 @@ if(trials.length != conditions.length) { throw new Error('Missing trials!'); }
 let rand = Math.floor(Math.random() * trials.length)
 condition = trials[rand];
 conditionStr = conditions[rand];
-console.log(conditionStr)
+// console.log(conditionStr)
 
 const trialsPerBlock = 7;
 var k = trialsPerBlock;
@@ -105,19 +106,18 @@ var prev = ""
 var randord = 0;
 var it = 0;
 
-// for (let i=0; i<conditions.length; i++){
-//     let con = conditions[i]
-//     let trialZ = trials[i]
+for (let i=0; i<conditions.length; i++){
+    let con = conditions[i]
+    let trialZ = trials[i]
 
-//     for (let j=0; j<trialZ.length; j++){
-//         console.log('<img style="display: none;" class="preloadImage" src="img/' + con + trialZ[j] +  '.jpg">')
-//     }
-//     // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50" +  '.jpg">')
-//     // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50a" +  '.jpg">')
-//     // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50b" +  '.jpg">')
-//     // console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50c" +  '.jpg">')
-
-// }
+    for (let j=0; j<trialZ.length; j++){
+        console.log('<img style="display: none;" class="preloadImage" src="img/' + con + trialZ[j] +  '.jpg">')
+    }
+    console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50" +  '.jpg">')
+    console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50a" +  '.jpg">')
+    console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50b" +  '.jpg">')
+    console.log('<img style="display: none;" class="preloadImage" src="img/' + con + "50c" +  '.jpg">')
+}
 
 // FOR CALCULATING THRESHOLD FROM MULTIPLE PARTICIPANTS' RESPONSE
 // var thing = ""
