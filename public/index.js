@@ -293,10 +293,10 @@ function realismSubmit(button) {
 function correctAnswer(chosen, ref) {
     let char = chosen.slice(-1)
     if(char.toLowerCase() !== char.toUpperCase()) { // last char is a letter -> CORRECT answer.
-        console.log("RIGHT");
+        // console.log("RIGHT");
         return 1;
     }
-    else { console.log("WRONG"); return 0; }
+    else { return 0; }
 }
 
 function getTrialResult(button) {
@@ -336,7 +336,7 @@ function getClosestIntensity(suggested){
     // returns e.g. 60
     let nextIntensity = conditionStr + closest.toString(); // "T200R60"
     currentIntensity = Math.log10((closest - 50)/100)
-    console.log("closest:", closest, "log", 10**currentIntensity)
+    // console.log("closest:", closest, "log", 10**currentIntensity)
     return nextIntensity
 }
 
@@ -394,6 +394,7 @@ function verifyAndGatherData() {
         let data = {
             gender: $("select[name=gender]").find(":selected").text(),
             age: potentialAge,
+            criteria: $("select[name=criteria]").find(":selected").text(),
             location: $("select[name=location]").find(":selected").text(),
             device: $("select[name=device]").find(":selected").text(),
             education: $("select[name=education]").find(":selected").text(),
