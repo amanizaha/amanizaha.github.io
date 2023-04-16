@@ -62,11 +62,11 @@ const trials_F200C = [52, 54, 55, 56, 60, 62, 64, 65, 68, 70, 75, 80, 85, 90];
 
 // git push --mirror git@github.com:amanizaha/amanizaha.github.io.git
 
-const trials = [trials_T700R, trials_T500R, trials_T300R, trials_T200R, trials_T700C, trials_T500C, trials_T300C, trials_T200C, trials_F500R, trials_F300R, trials_F200R, trials_F500C, trials_F300C, trials_F200C];
-const conditions = ["T700R", "T500R", "T300R", "T200R", "T700C", "T500C", "T300C", "T200C", "F500R", "F300R", "F200R", "F500C", "F300C", "F200C"]
+// const trials = [trials_T700R, trials_T500R, trials_T300R, trials_T200R, trials_T700C, trials_T500C, trials_T300C, trials_T200C, trials_F500R, trials_F300R, trials_F200R, trials_F500C, trials_F300C, trials_F200C];
+// const conditions = ["T700R", "T500R", "T300R", "T200R", "T700C", "T500C", "T300C", "T200C", "F500R", "F300R", "F200R", "F500C", "F300C", "F200C"]
 
-// const trials = [trials_T300R];
-// const conditions = ["T300R"];
+const trials = [trials_T300R];
+const conditions = ["T300R"];
 
 if(trials.length != conditions.length) { throw new Error('Missing trials!'); }
 
@@ -77,7 +77,7 @@ condition = trials[rand];
 conditionStr = conditions[rand];
 // console.log(conditionStr)
 
-const trialsPerBlock = 7;
+const trialsPerBlock = 1;
 var k = trialsPerBlock;
 const numTrials = trials.length * k;
 let currentTrialIndex = -1;
